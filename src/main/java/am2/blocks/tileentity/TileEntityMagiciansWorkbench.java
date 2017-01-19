@@ -64,7 +64,7 @@ public class TileEntityMagiciansWorkbench extends TileEntity implements ITickabl
 			}
 		}else{
 			if (getDrawerOffset() == drawerMax){
-				this.worldObj.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F, true);
+				this.world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F, true);
 			}
 			if (getDrawerOffset() - drawerIncrement > drawerMin){
 				setDrawerOffset(getDrawerOffset() - drawerIncrement);
@@ -107,14 +107,14 @@ public class TileEntityMagiciansWorkbench extends TileEntity implements ITickabl
 		}
 
 		++this.numPlayersUsing;
-		this.worldObj.addBlockEvent(pos, this.getBlockType(), 1, this.numPlayersUsing);
+		this.world.addBlockEvent(pos, this.getBlockType(), 1, this.numPlayersUsing);
 	}
 
 	@Override
 	public void closeInventory(EntityPlayer player){
 		if (this.getBlockType() != null && this.getBlockType() instanceof BlockMagiciansWorkbench){
 			--this.numPlayersUsing;
-			this.worldObj.addBlockEvent(pos, this.getBlockType(), 1, this.numPlayersUsing);
+			this.world.addBlockEvent(pos, this.getBlockType(), 1, this.numPlayersUsing);
 		}
 	}
 
@@ -128,8 +128,8 @@ public class TileEntityMagiciansWorkbench extends TileEntity implements ITickabl
 		else
 			upgradeState &= ~flag;
 
-		if (!worldObj.isRemote)
-			worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+		if (!world.isRemote)
+			world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 	}
 
 	public void rememberRecipe(ItemStack output, ItemStack[] recipeItems, boolean is2x2){
@@ -147,7 +147,7 @@ public class TileEntityMagiciansWorkbench extends TileEntity implements ITickabl
 
 		rememberedRecipes.add(new RememberedRecipe(output, recipeItems, is2x2));
 
-		worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+		world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 	}
 
 	private boolean popRecipe(){
@@ -236,8 +236,8 @@ public class TileEntityMagiciansWorkbench extends TileEntity implements ITickabl
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer){
-		if (worldObj.getTileEntity(pos) != this){
+	public boolean isUsableByPlayer(EntityPlayer entityplayer){
+		if (world.getTileEntity(pos) != this){
 			return false;
 		}
 		return entityplayer.getDistanceSqToCenter(pos) <= 64D;
@@ -293,7 +293,7 @@ public class TileEntityMagiciansWorkbench extends TileEntity implements ITickabl
 		if (index >= 0 && index < rememberedRecipes.size())
 			rememberedRecipes.get(index).isLocked = locked;
 
-		if (worldObj.isRemote){
+		if (world.isRemote){
 			AMDataWriter writer = new AMDataWriter();
 			writer.add(pos.getX());
 			writer.add(pos.getY());

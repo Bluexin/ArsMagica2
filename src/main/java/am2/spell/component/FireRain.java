@@ -60,7 +60,7 @@ public class FireRain extends SpellComponent{
 			fire.setDamageBonus((float)damage);
 			fire.setTicksToExist(duration);
 			fire.SetCasterAndStack(caster, stack);
-			world.spawnEntityInWorld(fire);
+			world.spawnEntity(fire);
 		}
 		return true;
 	}

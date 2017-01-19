@@ -80,7 +80,7 @@ public class CraftingEssenceExtractor implements IInventory{
 	public void onInventoryChanged(){
 	}
 
-	public boolean isUseableByPlayer(EntityPlayer entityplayer){
+	public boolean isUsableByPlayer(EntityPlayer entityplayer){
 		return true;
 	}
 

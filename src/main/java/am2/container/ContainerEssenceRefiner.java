@@ -53,7 +53,7 @@ public class ContainerEssenceRefiner extends AM2Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return essenceRefiner.isUseableByPlayer(entityplayer);
+		return essenceRefiner.isUsableByPlayer(entityplayer);
 	}
 
 	@Override

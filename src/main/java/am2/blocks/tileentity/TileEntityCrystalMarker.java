@@ -1,7 +1,5 @@
 package am2.blocks.tileentity;
 
-import java.util.List;
-
 import am2.api.math.AMVector3;
 import am2.blocks.BlockCrystalMarker;
 import am2.utils.InventoryUtilities;
@@ -25,6 +23,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class TileEntityCrystalMarker extends TileEntity implements IInventory, ISidedInventory, ITickable{
@@ -54,8 +54,8 @@ public class TileEntityCrystalMarker extends TileEntity implements IInventory, I
 	public void cyclePriority(){
 		this.priority++;
 		this.priority %= TileEntityFlickerHabitat.PRIORITY_LEVELS;
-		if (!this.worldObj.isRemote){
-			for (EntityPlayerMP player : (List<EntityPlayerMP>)this.worldObj.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).expand(64, 64, 64))){
+		if (!this.world.isRemote){
+			for (EntityPlayerMP player : (List<EntityPlayerMP>)this.world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).expand(64, 64, 64))){
 				player.connection.sendPacket(getUpdatePacket());
 			}
 		}
@@ -348,11 +348,11 @@ public class TileEntityCrystalMarker extends TileEntity implements IInventory, I
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer){
-		if (worldObj.getTileEntity(pos) != this){
+	public boolean isUsableByPlayer(EntityPlayer player) {
+		if (world.getTileEntity(pos) != this){
 			return false;
 		}
-		return entityplayer.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64D;
+		return player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64D;
 	}
 
 	@Override
@@ -388,7 +388,7 @@ public class TileEntityCrystalMarker extends TileEntity implements IInventory, I
 	}
 
 	public void linkToHabitat(AMVector3 habLocation, EntityPlayer player){
-		TileEntity te = worldObj.getTileEntity(habLocation.toBlockPos());
+		TileEntity te = world.getTileEntity(habLocation.toBlockPos());
 
 		if (te instanceof TileEntityFlickerHabitat){
 			AMVector3 myLocation = new AMVector3(pos);
@@ -408,7 +408,7 @@ public class TileEntityCrystalMarker extends TileEntity implements IInventory, I
 				if (setElementalAttuner)
 					this.setElementalAttuner(habLocation);
 			}else{
-				player.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.habitatToFar")));
+				player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.habitatToFar")));
 			}
 		}
 	}
@@ -454,8 +454,8 @@ public class TileEntityCrystalMarker extends TileEntity implements IInventory, I
 
 	@Override
 	public void update() {
-		if (!worldObj.isRemote && worldObj.getBlockState(pos).getValue(BlockCrystalMarker.FACING) != facing)
-			worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockCrystalMarker.FACING, facing));
+		if (!world.isRemote && world.getBlockState(pos).getValue(BlockCrystalMarker.FACING) != facing)
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockCrystalMarker.FACING, facing));
 		//worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
 	}
 	

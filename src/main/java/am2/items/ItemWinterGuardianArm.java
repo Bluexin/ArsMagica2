@@ -1,15 +1,12 @@
 package am2.items;
 
-import java.util.List;
-
-import com.google.common.collect.Multimap;
-
 import am2.ArsMagica2;
 import am2.buffs.BuffEffectFrostSlowed;
 import am2.defs.ItemDefs;
 import am2.entity.EntityWinterGuardianArm;
 import am2.extensions.EntityExtension;
 import am2.particles.AMParticle;
+import com.google.common.collect.Multimap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,6 +22,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 @SuppressWarnings("deprecation")
 public class ItemWinterGuardianArm extends ItemArsMagica{
 
@@ -37,8 +36,8 @@ public class ItemWinterGuardianArm extends ItemArsMagica{
 	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot slot){
 		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(slot);
 		if (slot.equals(EntityEquipmentSlot.MAINHAND)) {
-			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 6, 0));
-			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -1, 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 6, 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -1, 0));
 		}
 		return multimap;
 	}
@@ -53,12 +52,12 @@ public class ItemWinterGuardianArm extends ItemArsMagica{
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity){
 		if (entity instanceof EntityLivingBase){
 			((EntityLivingBase)entity).addPotionEffect(new BuffEffectFrostSlowed(60, 3));
-			if (player.worldObj.isRemote){
+			if (player.world.isRemote){
 				for (int i = 0; i < 5; ++i){
-					AMParticle particle = (AMParticle)ArsMagica2.proxy.particleManager.spawn(player.worldObj, "snowflakes", entity.posX + 0.5, entity.posY + 0.5, entity.posZ + 0.5);
+					AMParticle particle = (AMParticle)ArsMagica2.proxy.particleManager.spawn(player.world, "snowflakes", entity.posX + 0.5, entity.posY + 0.5, entity.posZ + 0.5);
 					if (particle != null){
 						particle.addRandomOffset(1, 0.5, 1);
-						particle.addVelocity(player.worldObj.rand.nextDouble() * 0.2 - 0.1, 0.3, player.worldObj.rand.nextDouble() * 0.2 - 0.1);
+						particle.addVelocity(player.world.rand.nextDouble() * 0.2 - 0.1, 0.3, player.world.rand.nextDouble() * 0.2 - 0.1);
 						particle.setAffectedByGravity();
 						particle.setDontRequireControllers();
 						particle.setMaxAge(10);
@@ -88,7 +87,7 @@ public class ItemWinterGuardianArm extends ItemArsMagica{
 			EntityWinterGuardianArm projectile = new EntityWinterGuardianArm(world, player, 1.25f);
 			projectile.setThrowingEntity(player);
 			projectile.setProjectileSpeed(2.0);
-			world.spawnEntityInWorld(projectile);
+			world.spawnEntity(projectile);
 		}
 		EntityExtension.For(player).deductMana(250f);
 		return true;

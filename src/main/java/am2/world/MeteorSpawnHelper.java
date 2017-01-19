@@ -1,7 +1,5 @@
 package am2.world;
 
-import java.util.Random;
-
 import am2.ArsMagica2;
 import am2.api.math.AMVector3;
 import am2.blocks.tileentity.flickers.FlickerOperatorMoonstoneAttractor;
@@ -16,6 +14,8 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import java.util.Random;
+
 public class MeteorSpawnHelper{
 	private final Random rand = new Random();
 	private int ticksSinceLastMeteor = 0;
@@ -24,8 +24,8 @@ public class MeteorSpawnHelper{
 
 	public void tick(){
 		if (ticksSinceLastMeteor == 0){
-			if ( FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length < 1) return;
-			WorldServer ws = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers[0];
+			if ( FMLCommonHandler.instance().getMinecraftServerInstance().worlds.length < 1) return;
+			WorldServer ws = FMLCommonHandler.instance().getMinecraftServerInstance().worlds[0];
 			if (rand.nextInt(2500 + (1000 * ws.provider.getMoonPhase(ws.provider.getWorldTime()))) == 0){
 				spawnMeteor();
 			}
@@ -36,10 +36,10 @@ public class MeteorSpawnHelper{
 
 	public void spawnMeteor(){
 		ticksSinceLastMeteor = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().rand.nextInt(36000) + 12000;
-		if ( FMLCommonHandler.instance().getMinecraftServerInstance().worldServers.length < 1) return;
+		if ( FMLCommonHandler.instance().getMinecraftServerInstance().worlds.length < 1) return;
 
 		WorldServer ws = null;
-		for (WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers){
+		for (WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worlds){
 			if (world.provider.getDimension() == 0){
 				ws = world;
 				break;
@@ -84,7 +84,7 @@ public class MeteorSpawnHelper{
 			meteor.setPosition(spawnCoord.x + rand.nextInt(meteorOffsetRadius) - (meteorOffsetRadius / 2), ws.getActualHeight(), spawnCoord.z + rand.nextInt(meteorOffsetRadius) - (meteorOffsetRadius / 2));
 			meteor.setMoonstoneMeteor();
 			meteor.setMoonstoneMeteorTarget(spawnCoord.toVec3D());
-			ws.spawnEntityInWorld(meteor);
+			ws.spawnEntity(meteor);
 		}
 
 	}

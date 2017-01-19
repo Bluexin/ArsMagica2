@@ -60,7 +60,7 @@ public class ContainerArcaneDeconstructor extends AM2Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return deconstructor.isUseableByPlayer(entityplayer);
+		return deconstructor.isUsableByPlayer(entityplayer);
 	}
 
 	@Override

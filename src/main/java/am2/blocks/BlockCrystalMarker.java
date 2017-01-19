@@ -1,7 +1,5 @@
 package am2.blocks;
 
-import java.util.List;
-
 import am2.ArsMagica2;
 import am2.api.math.AMVector3;
 import am2.blocks.tileentity.TileEntityCrystalMarker;
@@ -22,11 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -35,6 +29,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class BlockCrystalMarker extends BlockAMContainer{
@@ -137,7 +133,7 @@ public class BlockCrystalMarker extends BlockAMContainer{
 
 			//input node?  Nothing more to do here than notify the player.
 			if (operandType == META_IN){
-				player.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.noPriIn")));
+				player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.noPriIn")));
 				return false;
 			}
 
@@ -163,7 +159,7 @@ public class BlockCrystalMarker extends BlockAMContainer{
 				}
 
 				//finally, notify the player of the new priority
-				player.addChatMessage(
+				player.sendStatusMessage(
 						new TextComponentString(String.format(
 								I18n.translateToLocal("am2.tooltip.priSet"),
 								String.format("%d", crystalMarkerTE.getPriority()) //need to put this as a string, because for some reason %d doesn't work when used in a localized string, but %s does
@@ -177,11 +173,6 @@ public class BlockCrystalMarker extends BlockAMContainer{
 		}
 
 		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
-	}
-	
-	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, facing.getOpposite());
 	}
 	
 	@Override
@@ -211,6 +202,7 @@ public class BlockCrystalMarker extends BlockAMContainer{
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
+		state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	private TileEntityCrystalMarker GetTileEntity(World world, BlockPos pos){
@@ -316,7 +308,7 @@ public class BlockCrystalMarker extends BlockAMContainer{
 			IBlockState block = world.getBlockState(pos);
 			ItemStack itemStack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
 			EntityItem entityItem = new EntityItem((World) world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
-			((World) world).spawnEntityInWorld(entityItem);
+			((World) world).spawnEntity(entityItem);
 			((World) world).setBlockToAir(pos);
 		}
 	}

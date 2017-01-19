@@ -75,10 +75,10 @@ public class TileEntityArcaneDeconstructor extends TileEntityAMPower implements 
 	public void update(){
 		super.update();
 
-		if (worldObj.isRemote){
+		if (world.isRemote){
 			if (particleCounter == 0 || particleCounter++ > 1000){
 				particleCounter = 1;
-				radiant = (AMParticle)ArsMagica2.proxy.particleManager.spawn(worldObj, "radiant", pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
+				radiant = (AMParticle)ArsMagica2.proxy.particleManager.spawn(world, "radiant", pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f);
 				if (radiant != null){
 					radiant.setMaxAge(1000);
 					radiant.setRGBColorF(0.1f, 0.1f, 0.1f);
@@ -95,9 +95,9 @@ public class TileEntityArcaneDeconstructor extends TileEntityAMPower implements 
 				if (inventory[0] == null){
 					current_deconstruction_time = 0;
 					deconstructionRecipe = null;
-					worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+					world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 				}else{
-					if (PowerNodeRegistry.For(worldObj).checkPower(this, PowerTypes.DARK, DECONSTRUCTION_POWER_COST)){
+					if (PowerNodeRegistry.For(world).checkPower(this, PowerTypes.DARK, DECONSTRUCTION_POWER_COST)){
 						if (deconstructionRecipe == null){
 							if (!getDeconstructionRecipe()){
 								transferOrEjectItem(inventory[0]);
@@ -115,9 +115,9 @@ public class TileEntityArcaneDeconstructor extends TileEntityAMPower implements 
 								current_deconstruction_time = 0;
 							}
 							if (current_deconstruction_time % 10 == 0)
-								worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+								world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 						}
-						PowerNodeRegistry.For(worldObj).consumePower(this, PowerTypes.DARK, DECONSTRUCTION_POWER_COST);
+						PowerNodeRegistry.For(world).consumePower(this, PowerTypes.DARK, DECONSTRUCTION_POWER_COST);
 					}
 				}
 			}
@@ -241,7 +241,7 @@ public class TileEntityArcaneDeconstructor extends TileEntityAMPower implements 
 	}
 
 	private void transferOrEjectItem(ItemStack stack){
-		if (worldObj.isRemote)
+		if (world.isRemote)
 			return;
 
 		for (int i = -1; i <= 1; ++i){
@@ -249,7 +249,7 @@ public class TileEntityArcaneDeconstructor extends TileEntityAMPower implements 
 				for (int k = -1; k <= 1; ++k){
 					if (i == 0 && j == 0 && k == 0)
 						continue;
-					TileEntity te = worldObj.getTileEntity(pos.add(i, j, k));
+					TileEntity te = world.getTileEntity(pos.add(i, j, k));
 					if (te != null && te instanceof IInventory){
 						for (EnumFacing side : EnumFacing.values()){
 							if (InventoryUtilities.mergeIntoInventory((IInventory)te, stack, stack.stackSize, side))
@@ -261,10 +261,10 @@ public class TileEntityArcaneDeconstructor extends TileEntityAMPower implements 
 		}
 
 		//eject the remainder
-		EntityItem item = new EntityItem(worldObj);
+		EntityItem item = new EntityItem(world);
 		item.setPosition(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
 		item.setEntityItemStack(stack);
-		worldObj.spawnEntityInWorld(item);
+		world.spawnEntity(item);
 	}
 
 	public boolean isActive(){
@@ -337,7 +337,7 @@ public class TileEntityArcaneDeconstructor extends TileEntityAMPower implements 
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer){
+	public boolean isUsableByPlayer(EntityPlayer entityplayer){
 		return entityplayer.getDistanceSqToCenter(pos) <= 64D;
 	}
 

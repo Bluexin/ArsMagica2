@@ -1,14 +1,5 @@
 package am2.api.compendium.pages;
 
-import static net.minecraft.client.renderer.texture.TextureMap.LOCATION_BLOCKS_TEXTURE;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeMap;
-
-import org.lwjgl.opengl.GL11;
-
 import am2.api.blocks.MultiblockGroup;
 import am2.api.blocks.MultiblockStructureDefinition;
 import am2.api.blocks.TypedMultiblockGroup;
@@ -29,6 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
+import org.lwjgl.opengl.GL11;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.TreeMap;
+
+import static net.minecraft.client.renderer.texture.TextureMap.LOCATION_BLOCKS_TEXTURE;
 
 @SuppressWarnings("deprecation")
 public class PageMultiblock extends CompendiumPage<MultiblockStructureDefinition> {
@@ -231,7 +230,7 @@ public class PageMultiblock extends CompendiumPage<MultiblockStructureDefinition
 			mc.renderEngine.bindTexture(LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.enableLighting();
 		if (state.getBlock() instanceof ITileEntityProvider)
-			TileEntityRendererDispatcher.instance.renderTileEntityAt(((ITileEntityProvider)state.getBlock()).createNewTileEntity(Minecraft.getMinecraft().theWorld, state.getBlock().getMetaFromState(state)), 0, 0, 0, 0, 0);
+			TileEntityRendererDispatcher.instance.renderTileEntityAt(((ITileEntityProvider)state.getBlock()).createNewTileEntity(Minecraft.getMinecraft().world, state.getBlock().getMetaFromState(state)), 0, 0, 0, 0, 0);
 		GlStateManager.disableLighting();
 		Tessellator.getInstance().getBuffer().begin(7, DefaultVertexFormats.BLOCK);
 		GlStateManager.enableBlend();

@@ -60,7 +60,7 @@ public class ContainerRuneBag extends Container{
 
 	@Override
 	public void onContainerClosed(EntityPlayer entityplayer){
-		World world = entityplayer.worldObj;
+		World world = entityplayer.world;
 
 		if (!world.isRemote){
 			ItemStack runeBagItemStack = bagStack;
@@ -75,7 +75,7 @@ public class ContainerRuneBag extends Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return runeBagInventory.isUseableByPlayer(entityplayer);
+		return runeBagInventory.isUsableByPlayer(entityplayer);
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class TileEntitySummoner extends TileEntityAMPower implements IInventory,
 	}
 
 	private boolean isRedstonePowered(){
-		return this.worldObj.isBlockIndirectlyGettingPowered(pos) > 0;
+		return this.world.isBlockIndirectlyGettingPowered(pos) > 0;
 	}
 
 	@Override
@@ -54,22 +54,22 @@ public class TileEntitySummoner extends TileEntityAMPower implements IInventory,
 		summonCooldown--;
 		if (summonCooldown < 0) summonCooldown = 0;
 
-		if (!worldObj.isRemote && summonCooldown == 0 && prevSummonCooldown > 0){
-			worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+		if (!world.isRemote && summonCooldown == 0 && prevSummonCooldown > 0){
+			world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 		}
 
-		if (!worldObj.isRemote){
+		if (!world.isRemote){
 			EntityLiving ent = getSummonedCreature();
 			if (ent == null){
 				summonEntityID = -1;
 			}
 			if (isRedstonePowered() && inventory[SUMMON_SLOT] != null){
-				if (PowerNodeRegistry.For(this.worldObj).checkPower(this, maintainCost)){
+				if (PowerNodeRegistry.For(this.world).checkPower(this, maintainCost)){
 					if (ent == null && canSummon()){
 						summonCreature();
 					}else{
 						if (ent != null){
-							PowerNodeRegistry.For(this.worldObj).consumePower(this, PowerNodeRegistry.For(this.worldObj).getHighestPowerType(this), maintainCost);
+							PowerNodeRegistry.For(this.world).consumePower(this, PowerNodeRegistry.For(this.world).getHighestPowerType(this), maintainCost);
 						}
 					}
 				}else{
@@ -78,7 +78,7 @@ public class TileEntitySummoner extends TileEntityAMPower implements IInventory,
 			}else{
 				if (ent != null){
 					unsummonCreature();
-					PowerNodeRegistry.For(this.worldObj).insertPower(this, PowerTypes.NEUTRAL, summonCost / 2);
+					PowerNodeRegistry.For(this.world).insertPower(this, PowerTypes.NEUTRAL, summonCost / 2);
 				}
 			}
 		}
@@ -95,9 +95,9 @@ public class TileEntitySummoner extends TileEntityAMPower implements IInventory,
 	}
 
 	public boolean canSummon(){
-		if (this.worldObj == null)
+		if (this.world == null)
 			return false;
-		return summonCooldown == 0 && PowerNodeRegistry.For(this.worldObj).checkPower(this, getSummonCost() + powerPadding);
+		return summonCooldown == 0 && PowerNodeRegistry.For(this.world).checkPower(this, getSummonCost() + powerPadding);
 	}
 
 	public boolean hasSummon(){
@@ -105,34 +105,34 @@ public class TileEntitySummoner extends TileEntityAMPower implements IInventory,
 	}
 
 	private void summonCreature(){
-		if (worldObj.isRemote || this.summonEntityID != -1) return;
+		if (world.isRemote || this.summonEntityID != -1) return;
 		if (dummyCaster == null){
-			dummyCaster = new DummyEntityPlayer(worldObj);
+			dummyCaster = new DummyEntityPlayer(world);
 		}
-		EntityLiving summon = ((Summon)ArsMagicaAPI.getSpellRegistry().getObject(new ResourceLocation("arsmagica2:summon"))).summonCreature(inventory[SUMMON_SLOT], dummyCaster, dummyCaster, worldObj, pos.getX(), pos.getY() + 1, pos.getZ());
+		EntityLiving summon = ((Summon)ArsMagicaAPI.getSpellRegistry().getObject(new ResourceLocation("arsmagica2:summon"))).summonCreature(inventory[SUMMON_SLOT], dummyCaster, dummyCaster, world, pos.getX(), pos.getY() + 1, pos.getZ());
 		if (summon != null){
 			if (summon instanceof EntityCreature)
 				EntityUtils.setGuardSpawnLocation((EntityCreature)summon, pos.getX(), pos.getY(), pos.getZ());
 			this.summonEntityID = summon.getEntityId();
-			PowerNodeRegistry.For(this.worldObj).consumePower(this, PowerNodeRegistry.For(this.worldObj).getHighestPowerType(this), summonCost);
+			PowerNodeRegistry.For(this.world).consumePower(this, PowerNodeRegistry.For(this.world).getHighestPowerType(this), summonCost);
 			this.summonCooldown = TileEntitySummoner.maxSummonCooldown;
 			EntityUtils.setTileSpawned(summon, this);
-			worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+			world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 		}
 	}
 
 	private void unsummonCreature(){
-		if (worldObj.isRemote) return;
+		if (world.isRemote) return;
 		EntityLiving ent = getSummonedCreature();
 		if (ent == null) return;
 		ent.attackEntityFrom(DamageSources.unsummon, 1000000);
 		this.summonEntityID = -1;
-		worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+		world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 	}
 
 	private EntityLiving getSummonedCreature(){
 		if (this.summonEntityID == -1) return null;
-		return (EntityLiving)worldObj.getEntityByID(this.summonEntityID);
+		return (EntityLiving)world.getEntityByID(this.summonEntityID);
 	}
 
 	@Override
@@ -218,8 +218,8 @@ public class TileEntitySummoner extends TileEntityAMPower implements IInventory,
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer){
-		if (worldObj.getTileEntity(pos) != this){
+	public boolean isUsableByPlayer(EntityPlayer entityplayer){
+		if (world.getTileEntity(pos) != this){
 			return false;
 		}
 		return entityplayer.getDistanceSqToCenter(pos) <= 64D;

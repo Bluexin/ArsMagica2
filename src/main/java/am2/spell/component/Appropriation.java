@@ -1,12 +1,5 @@
 package am2.spell.component;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import com.google.common.collect.Sets;
-
 import am2.ArsMagica2;
 import am2.api.affinity.Affinity;
 import am2.api.spell.SpellComponent;
@@ -18,6 +11,7 @@ import am2.particles.AMParticle;
 import am2.particles.ParticleOrbitPoint;
 import am2.utils.DummyEntityPlayer;
 import am2.utils.SpellUtils;
+import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -36,6 +30,11 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 @SuppressWarnings("deprecation")
 public class Appropriation extends SpellComponent{
@@ -139,7 +138,7 @@ public class Appropriation extends SpellComponent{
 						Entity ent = (Entity)Class.forName(clazz).getConstructor(World.class).newInstance(world);
 						ent.readFromNBT(entData);
 						ent.setPosition(hitX, hitY, hitZ);
-						world.spawnEntityInWorld(ent);
+						world.spawnEntity(ent);
 					}catch (Throwable t){
 						t.printStackTrace();
 					}
@@ -153,8 +152,8 @@ public class Appropriation extends SpellComponent{
 					if (block != null){
 						world.setBlockState(pos, block.getStateFromMeta(meta), 2);
 					}else{
-						if (!player.worldObj.isRemote)
-							player.addChatComponentMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.approError")));
+						if (!player.world.isRemote)
+							player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.approError")));
 						stack.getTagCompound().removeTag(storageKey);
 						return;
 					}
@@ -165,7 +164,7 @@ public class Appropriation extends SpellComponent{
 						if (te != null){
 							te.readFromNBT(storageCompound.getCompoundTag("tileEntity"));
 							te.setPos(pos);
-							te.setWorldObj(world);
+							te.setWorld(world);
 						}
 					}
 				}

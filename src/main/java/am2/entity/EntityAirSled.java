@@ -33,11 +33,11 @@ public class EntityAirSled extends EntityLiving{
 	public void onUpdate(){
 		this.stepHeight = 1.02f;
 
-		if (worldObj.isRemote){
+		if (world.isRemote){
 			rotation += 1f;
-			if (this.worldObj.isAirBlock(getPosition().down())){
+			if (this.world.isAirBlock(getPosition().down())){
 				for (int i = 0; i < ArsMagica2.config.getGFXLevel(); ++i){
-					AMParticle cloud = (AMParticle)ArsMagica2.proxy.particleManager.spawn(worldObj, "sparkle2", posX, posY + 0.5, posZ);
+					AMParticle cloud = (AMParticle)ArsMagica2.proxy.particleManager.spawn(world, "sparkle2", posX, posY + 0.5, posZ);
 					if (cloud != null){
 						cloud.addRandomOffset(1, 1, 1);
 						cloud.AddParticleController(new ParticleFadeOut(cloud, 1, false).setFadeSpeed(0.01f));
@@ -63,13 +63,13 @@ public class EntityAirSled extends EntityLiving{
 		if (this.getControllingPassenger() != null && this.getControllingPassenger() instanceof EntityPlayer && this.getControllingPassenger() != player){
 			return EnumActionResult.SUCCESS;
 		}else{
-			if (!this.worldObj.isRemote){
+			if (!this.world.isRemote){
 				if (player.isSneaking()){
 					this.setDead();
-					EntityItem item = new EntityItem(worldObj);
+					EntityItem item = new EntityItem(world);
 					item.setPosition(posX, posY, posZ);
 					item.setEntityItemStack(ItemDefs.airSledEnchanted.copy());
-					worldObj.spawnEntityInWorld(item);
+					world.spawnEntity(item);
 				}else{
 					player.startRiding(this);
 				}
@@ -108,7 +108,7 @@ public class EntityAirSled extends EntityLiving{
 			this.stepHeight = 1.0F;
 			this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
 
-			if (!this.worldObj.isRemote){
+			if (!this.world.isRemote){
 				par2 *= 0.06f;
 				if (par1 != 0){
 					float f4 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
@@ -134,7 +134,7 @@ public class EntityAirSled extends EntityLiving{
 
 		if (this.getControllingPassenger() != null)
 			this.setSize(0.5f, 3);
-		this.moveEntity(this.motionX, this.motionY, this.motionZ);
+		this.move(this.motionX, this.motionY, this.motionZ);
 		if (this.getControllingPassenger() != null)
 			this.setSize(0.5f, 1);
 

@@ -79,12 +79,11 @@ public class BlockParticleEmitter extends BlockAMContainer{
 		if (te2 != null && te2.getShow())
 			super.onBlockExploded(world, pos, explosion);
 	}
-	
-	
-	
+
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
@@ -124,11 +123,11 @@ public class BlockParticleEmitter extends BlockAMContainer{
 						ArsMagica2.proxy.openParticleBlockGUI(worldIn, playerIn, (TileEntityParticleEmitter) te);
 					} else {
 						if (ArsMagica2.proxy.cwCopyLoc == null) {
-							playerIn.addChatMessage(new TextComponentString("Settings Copied."));
+							playerIn.sendStatusMessage(new TextComponentString("Settings Copied."));
 							ArsMagica2.proxy.cwCopyLoc = new NBTTagCompound();
 							((TileEntityParticleEmitter) te).writeSettingsToNBT(ArsMagica2.proxy.cwCopyLoc);
 						} else {
-							playerIn.addChatMessage(new TextComponentString("Settings Applied."));
+							playerIn.sendStatusMessage(new TextComponentString("Settings Applied."));
 							((TileEntityParticleEmitter) te).readSettingsFromNBT(ArsMagica2.proxy.cwCopyLoc);
 							((TileEntityParticleEmitter) te).syncWithServer();
 							ArsMagica2.proxy.cwCopyLoc = null;

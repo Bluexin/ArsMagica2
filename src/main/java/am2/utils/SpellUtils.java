@@ -1,23 +1,12 @@
 package am2.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.annotation.Nullable;
-
-import com.google.common.collect.Lists;
-
 import am2.ArsMagica2;
 import am2.api.ArsMagicaAPI;
 import am2.api.SpellRegistry;
 import am2.api.affinity.Affinity;
 import am2.api.event.SpellCastEvent;
 import am2.api.extensions.IEntityExtension;
-import am2.api.spell.AbstractSpellPart;
-import am2.api.spell.SpellComponent;
-import am2.api.spell.SpellModifier;
-import am2.api.spell.SpellModifiers;
-import am2.api.spell.SpellShape;
+import am2.api.spell.*;
 import am2.armor.ArmorHelper;
 import am2.armor.ArsMagicaArmorMaterial;
 import am2.defs.ItemDefs;
@@ -32,9 +21,9 @@ import am2.items.ItemSpellBase;
 import am2.spell.SpellCastResult;
 import am2.spell.modifier.Colour;
 import am2.spell.shape.MissingShape;
+import com.google.common.collect.Lists;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -56,6 +45,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.oredict.OreDictionary;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @SuppressWarnings("deprecation")
 public class SpellUtils {
@@ -132,7 +125,7 @@ public class SpellUtils {
 	
 	public static boolean attackTargetSpecial(ItemStack spellStack, Entity target, DamageSource damagesource, float magnitude){
 
-		if (target.worldObj.isRemote)
+		if (target.world.isRemote)
 			return true;
 
 		EntityPlayer dmgSrcPlayer = null;
@@ -146,7 +139,7 @@ public class SpellUtils {
 					return false;
 				}else if (source instanceof EntityDarkMage && target instanceof EntityDarkMage){
 					return false;
-				}else  if (source instanceof EntityPlayer && target instanceof EntityPlayer && !target.worldObj.isRemote && (!FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled() || ((EntityPlayer)target).capabilities.isCreativeMode)){
+				}else  if (source instanceof EntityPlayer && target instanceof EntityPlayer && !target.world.isRemote && (!FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled() || ((EntityPlayer)target).capabilities.isCreativeMode)){
 					return false;
 				}
 
@@ -191,12 +184,12 @@ public class SpellUtils {
 
 		if (dmgSrcPlayer != null){
 			if (spellStack != null && target instanceof EntityLivingBase){
-				if (!target.worldObj.isRemote &&
+				if (!target.world.isRemote &&
 						((EntityLivingBase)target).getHealth() <= 0 &&
 						modifierIsPresent(SpellModifiers.DISMEMBERING_LEVEL, spellStack)){
-					double chance = SpellUtils.getModifiedDouble_Add(0, spellStack, dmgSrcPlayer, target, dmgSrcPlayer.worldObj, SpellModifiers.DISMEMBERING_LEVEL);
-					if (dmgSrcPlayer.worldObj.rand.nextDouble() <= chance){
-						dropHead(target, dmgSrcPlayer.worldObj);
+					double chance = SpellUtils.getModifiedDouble_Add(0, spellStack, dmgSrcPlayer, target, dmgSrcPlayer.world, SpellModifiers.DISMEMBERING_LEVEL);
+					if (dmgSrcPlayer.world.rand.nextDouble() <= chance){
+						dropHead(target, dmgSrcPlayer.world);
 					}
 				}
 			}
@@ -226,7 +219,7 @@ public class SpellUtils {
 		ItemStack stack = new ItemStack(Items.SKULL, 1, type);
 		item.setEntityItemStack(stack);
 		item.setPosition(x, y, z);
-		world.spawnEntityInWorld(item);
+		world.spawnEntity(item);
 	}
 	
 	public static NBTTagCompound encode(KeyValuePair<ArrayList<AbstractSpellPart>, NBTTagCompound> toEncode) {
@@ -465,7 +458,7 @@ public class SpellUtils {
 			}
 			if (!casterHasAllReagents(caster, stack)) {
 				if (world.isRemote)
-					caster.addChatMessage(new TextComponentString(getMissingReagents(caster, stack)));
+					caster.sendMessage(new TextComponentString(getMissingReagents(caster, stack)));
 				return SpellCastResult.REAGENTS_MISSING;
 			}
 		}

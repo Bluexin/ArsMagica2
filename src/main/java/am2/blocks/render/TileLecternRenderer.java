@@ -2,9 +2,7 @@ package am2.blocks.render;
 
 import am2.blocks.BlockLectern;
 import am2.blocks.tileentity.TileEntityLectern;
-import am2.gui.AMGuiHelper;
 import am2.models.ModelArchmagePodium;
-import am2.proxy.tick.ClientTickHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.GlStateManager;
@@ -38,7 +36,7 @@ public class TileLecternRenderer extends TileEntitySpecialRenderer<TileEntityLec
 		Minecraft.getMinecraft().mcProfiler.startSection("model");
 		RenderHelper.disableStandardItemLighting();
 		EnumFacing facing = EnumFacing.NORTH;
-		if (podium.hasWorldObj()) {
+		if (podium.hasWorld()) {
 			facing = podium.getWorld().getBlockState(podium.getPos()).getValue(BlockLectern.FACING);
 		}
 		Minecraft.getMinecraft().mcProfiler.startSection("rendering");
@@ -182,7 +180,7 @@ public class TileLecternRenderer extends TileEntitySpecialRenderer<TileEntityLec
 
 //		float var11 = podium.bookRotationPrev + f2 * partialTicks;
 		EnumFacing facing = EnumFacing.NORTH;
-		if (podium.hasWorldObj())
+		if (podium.hasWorld())
 			facing = podium.getWorld().getBlockState(podium.getPos()).getValue(BlockLectern.FACING);
 		GlStateManager.rotate(270 - facing.getHorizontalAngle(), 0, 1, 0);
 //		if (facing == EnumFacing.EAST || facing == EnumFacing.SOUTH)
@@ -193,11 +191,11 @@ public class TileLecternRenderer extends TileEntitySpecialRenderer<TileEntityLec
 		bindTexture(new ResourceLocation("textures/entity/enchanting_table_book.png"));
 		float var12 = podium.pageFlipPrev + (podium.pageFlip - podium.pageFlipPrev) * partialTicks + 0.25F;
 		float var13 = podium.pageFlipPrev + (podium.pageFlip - podium.pageFlipPrev) * partialTicks + 0.75F;
-		var12 = (var12 - MathHelper.truncateDoubleToInt(var12)) * 1.6F - 0.3F;
-		var13 = (var13 - MathHelper.truncateDoubleToInt(var13)) * 1.6F - 0.3F;
+		var12 = (var12 - MathHelper.floor(var12)) * 1.6F - 0.3F;
+		var13 = (var13 - MathHelper.floor(var13)) * 1.6F - 0.3F;
 		
-		var12 = MathHelper.clamp_float(var12, 0, 1);
-		var13 = MathHelper.clamp_float(var13, 0, 1);
+		var12 = MathHelper.clamp(var12, 0, 1);
+		var13 = MathHelper.clamp(var13, 0, 1);
 
 //		float var14 = podium.bookSpreadPrev + (podium.bookSpread - podium.bookSpreadPrev) * partialTicks;
 		this.enchantmentBook.setRotationAngles(var9, var12, var13, 1f, 0.0F, 0.0625F, (Entity)null);

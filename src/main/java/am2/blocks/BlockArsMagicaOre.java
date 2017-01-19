@@ -1,8 +1,5 @@
 package am2.blocks;
 
-import java.util.List;
-import java.util.Random;
-
 import am2.defs.ItemDefs;
 import am2.items.ItemBlockOre;
 import am2.items.ItemOre;
@@ -18,6 +15,9 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.List;
+import java.util.Random;
 
 public class BlockArsMagicaOre extends BlockAM {
 	
@@ -80,7 +80,7 @@ public class BlockArsMagicaOre extends BlockAM {
 	
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(ORE_TYPE, EnumOreType.values()[MathHelper.clamp_int(meta, 0, EnumOreType.values().length - 1)]);
+		return getDefaultState().withProperty(ORE_TYPE, EnumOreType.values()[MathHelper.clamp(meta, 0, EnumOreType.values().length - 1)]);
 	}
 	
 	@Override

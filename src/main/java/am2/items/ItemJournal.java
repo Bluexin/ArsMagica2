@@ -1,7 +1,5 @@
 package am2.items;
 
-import java.util.List;
-
 import am2.utils.EntityUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,6 +9,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class ItemJournal extends ItemArsMagica{
@@ -54,11 +54,11 @@ public class ItemJournal extends ItemArsMagica{
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack journal, World world, EntityPlayer player, EnumHand hand){
 
-		if (!player.worldObj.isRemote){
+		if (!player.world.isRemote){
 			if (getOwner(journal) == null){
 				setOwner(journal, player);
 			}else if (!getOwner(journal).equals(player.getName())){
-			  player.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.notYourJournal")));
+			  player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.notYourJournal")));
 				return super.onItemRightClick(journal, world, player, hand);
 			}
 

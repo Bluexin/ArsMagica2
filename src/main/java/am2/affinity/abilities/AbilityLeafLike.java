@@ -27,7 +27,7 @@ public class AbilityLeafLike extends AbstractAffinityAbility {
 		if (player.isCollidedHorizontally){
 			if (!player.isSneaking()){
 				float movement = EntityExtension.For(player).getIsFlipped() ? -0.25f : 0.25f;
-				player.moveEntity(0, movement, 0);
+				player.move(0, movement, 0);
 				player.motionY = 0;
 			}else{
 				player.motionY *= 0.79999999;

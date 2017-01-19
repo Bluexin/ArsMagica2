@@ -62,7 +62,7 @@ public class BlockWitchwoodLog extends BlockLog{
 	
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(LOG_AXIS, EnumAxis.values()[MathHelper.clamp_int(meta, 0, 3)]);
+		return getDefaultState().withProperty(LOG_AXIS, EnumAxis.values()[MathHelper.clamp(meta, 0, 3)]);
 	}
 	
 	public BlockWitchwoodLog registerAndName(ResourceLocation rl) {

@@ -1,14 +1,5 @@
 package am2.api.compendium.pages;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-
 import am2.api.ArsMagicaAPI;
 import am2.api.blocks.MultiblockStructureDefinition;
 import am2.api.compendium.wrapper.StackMapWrapper;
@@ -32,6 +23,15 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
 
 @SuppressWarnings("deprecation")
 @SideOnly(Side.CLIENT)
@@ -186,7 +186,7 @@ public abstract class CompendiumPage<E> {
     
 	protected void renderItemToolTip(ItemStack stack, int x, int y){
 		try{
-			List<String> list = stack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+			List<String> list = stack.getTooltip(this.mc.player, this.mc.gameSettings.advancedItemTooltips);
 
 			if (stack.getItem() instanceof ItemBlock){
 			}else{

@@ -234,10 +234,10 @@ public class GuiOcculus extends GuiScreen {
 					int offsetY = calcYOffset(posY, s) + 16;
 					int offsetX2 = calcXOffset(posX, parent) + 16;
 					int offsetY2 = calcYOffset(posY, parent) + 16;
-			        offsetX = MathHelper.clamp_int(offsetX, posX + 7, posX + 203);
-					offsetY = MathHelper.clamp_int(offsetY, posY + 7, posY + 203);
-					offsetX2 = MathHelper.clamp_int(offsetX2, posX + 7, posX + 203);
-					offsetY2 = MathHelper.clamp_int(offsetY2, posY + 7, posY + 203);
+			        offsetX = MathHelper.clamp(offsetX, posX + 7, posX + 203);
+					offsetY = MathHelper.clamp(offsetY, posY + 7, posY + 203);
+					offsetX2 = MathHelper.clamp(offsetX2, posX + 7, posX + 203);
+					offsetY2 = MathHelper.clamp(offsetY2, posY + 7, posY + 203);
 					boolean hasPrereq = data.canLearn(s.getID()) || data.hasSkill(s.getID());
 					int color = (!SkillData.For(player).hasSkill(s.getID()) ? s.getPoint().getColor() & 0x999999 : 0x00ff00);
 					if (!hasPrereq) color = 0x000000;

@@ -107,11 +107,7 @@ public class BlockKeystoneReceptacle extends BlockAMPowered{
 		receptacle.onPlaced();
 
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-	}
-	
-	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 	
 	@Override
@@ -120,7 +116,7 @@ public class BlockKeystoneReceptacle extends BlockAMPowered{
 		IKeystoneLockable<?> lockable = (IKeystoneLockable<?>)world.getTileEntity(pos);
 		if (KeystoneUtilities.instance.getKeyFromRunes(lockable.getRunesInKey()) != 0){
 			if (!world.isRemote)
-				player.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.clearKey")));
+				player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.clearKey")));
 			return false;
 		}
 

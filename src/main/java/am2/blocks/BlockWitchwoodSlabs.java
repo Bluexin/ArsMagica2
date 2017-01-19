@@ -1,8 +1,5 @@
 package am2.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import am2.defs.BlockDefs;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
@@ -15,6 +12,9 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BlockWitchwoodSlabs extends BlockSlab{
 	
@@ -85,7 +85,7 @@ public abstract class BlockWitchwoodSlabs extends BlockSlab{
 		
 		public static EnumSlabType byMeta(int meta) {
 			meta &= 0x7;
-			meta = MathHelper.clamp_int(meta, 0, values().length - 1);
+			meta = MathHelper.clamp(meta, 0, values().length - 1);
 			return values()[meta];
 		}
 	}

@@ -71,7 +71,7 @@ public class ContainerSpellBook extends Container{
 
 	@Override
 	public void onContainerClosed(EntityPlayer entityplayer){
-		World world = entityplayer.worldObj;
+		World world = entityplayer.world;
 
 		if (!world.isRemote){
 			ItemStack spellBookItemStack = bookStack;
@@ -86,7 +86,7 @@ public class ContainerSpellBook extends Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return spellBookStack.isUseableByPlayer(entityplayer);
+		return spellBookStack.isUsableByPlayer(entityplayer);
 	}
 
 	@Override

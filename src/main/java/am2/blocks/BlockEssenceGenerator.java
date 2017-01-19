@@ -1,9 +1,5 @@
 package am2.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import am2.ArsMagica2;
 import am2.blocks.tileentity.TileEntityBlackAurem;
 import am2.blocks.tileentity.TileEntityCelestialPrism;
@@ -27,6 +23,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class BlockEssenceGenerator extends BlockAMPowered{
 
@@ -170,15 +170,16 @@ public class BlockEssenceGenerator extends BlockAMPowered{
 				entityitem.motionX = (float)worldIn.rand.nextGaussian() * f3;
 				entityitem.motionY = (float)worldIn.rand.nextGaussian() * f3 + 0.2F;
 				entityitem.motionZ = (float)worldIn.rand.nextGaussian() * f3;
-				worldIn.spawnEntityInWorld(entityitem);
+				worldIn.spawnEntity(entityitem);
 			}while (true);
 		}
 		super.breakBlock(worldIn, pos, state);
 	}
-	
+
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, placer.getHorizontalFacing());
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 }

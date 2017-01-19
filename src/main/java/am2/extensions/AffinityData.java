@@ -1,9 +1,5 @@
 package am2.extensions;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import am2.api.ArsMagicaAPI;
 import am2.api.affinity.Affinity;
 import am2.api.extensions.IAffinityData;
@@ -19,6 +15,10 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class AffinityData implements IAffinityData, ICapabilityProvider, ICapabilitySerializable<NBTBase> {
 	public static final ResourceLocation ID = new ResourceLocation("arsmagica2:AffinityData");
@@ -44,7 +44,7 @@ public class AffinityData implements IAffinityData, ICapabilityProvider, ICapabi
 	}
 	
 	public void setAffinityDepth (Affinity name, double value) {
-		value = MathHelper.clamp_double(value, 0, MAX_DEPTH);
+		value = MathHelper.clamp(value, 0, MAX_DEPTH);
 		HashMap<Affinity, Double> map = DataSyncExtension.For(player).get(DataDefinitions.AFFINITY_DATA);
 		map.put(name, value);
 		DataSyncExtension.For(player).setWithSync(DataDefinitions.AFFINITY_DATA, map);

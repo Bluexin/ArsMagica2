@@ -91,7 +91,7 @@ public class ContainerKeystoneChest extends AM2Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer var1){
-		return chest.isUseableByPlayer(var1);
+		return chest.isUsableByPlayer(var1);
 	}
 
 	@Override

@@ -1,14 +1,11 @@
 package am2.items;
 
-import java.util.List;
-
-import com.google.common.collect.Multimap;
-
 import am2.ArsMagica2;
 import am2.defs.ItemDefs;
 import am2.entity.EntityThrownSickle;
 import am2.extensions.EntityExtension;
 import am2.utils.DummyEntityPlayer;
+import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,6 +24,8 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 
+import java.util.List;
+
 @SuppressWarnings("deprecation")
 public class ItemNatureGuardianSickle extends ItemArsMagica{
 
@@ -39,8 +38,8 @@ public class ItemNatureGuardianSickle extends ItemArsMagica{
 	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot slot){
 		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(slot);
 		if (slot.equals(EntityEquipmentSlot.MAINHAND)) {
-			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 9, 0));
-			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3, 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 9, 0));
+			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3, 0));
 		}
 		return multimap;
 	}
@@ -99,7 +98,7 @@ public class ItemNatureGuardianSickle extends ItemArsMagica{
 			projectile.setThrowingEntity(player);
 			projectile.setProjectileSpeed(2.0);
 			//projectile.setInMotion(1.25);
-			world.spawnEntityInWorld(projectile);
+			world.spawnEntity(projectile);
 			EntityExtension.For(player).deductMana(250f);
 		}
 		return true;

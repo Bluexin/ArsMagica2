@@ -65,7 +65,7 @@ public class EntityRiftStorage extends EntityLiving {
 			return super.processInteract(player, hand, stack);
 		}
 		RiftStorage.For(player).setAccessLevel(getStorageLevel());
-		player.openGui(ArsMagica2.instance, IDDefs.GUI_RIFT, worldObj, (int)posX, (int)posY, (int)posZ);
+		player.openGui(ArsMagica2.instance, IDDefs.GUI_RIFT, world, (int)posX, (int)posY, (int)posZ);
 		return super.processInteract(player, hand, stack);
 	}
 	

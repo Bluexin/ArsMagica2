@@ -1,8 +1,5 @@
 package am2.items;
 
-import java.util.List;
-import java.util.Map;
-
 import am2.ArsMagica2;
 import am2.container.InventorySpellBook;
 import am2.defs.IDDefs;
@@ -29,6 +26,9 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.Map;
 
 
 @SuppressWarnings("deprecation")
@@ -306,10 +306,11 @@ public class ItemSpellBook extends ItemArsMagica{
 		return 1;
 	}
 
-	@Override
-	public boolean isItemTool(ItemStack par1ItemStack){
-		return true;
-	}
+//	@Override
+//	public boolean isItemTool(ItemStack par1ItemStack){
+//		return true;
+//	}
+
 
 	@Override
 	@SideOnly(Side.CLIENT)

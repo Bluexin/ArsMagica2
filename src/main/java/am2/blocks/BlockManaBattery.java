@@ -44,9 +44,9 @@ public class BlockManaBattery extends BlockAMPowered{
 			TileEntityManaBattery te = getTileEntity(worldIn, pos);
 			if (te != null){
 				if (ArsMagica2.config.colourblindMode()){
-					playerIn.addChatMessage(new TextComponentString(String.format("Charge Level: %.2f %% [%s]", PowerNodeRegistry.For(worldIn).getPower(te, te.getPowerType()) / te.getCapacity() * 100, getColorNameFromPowerType(te.getPowerType()))));
+					playerIn.sendStatusMessage(new TextComponentString(String.format("Charge Level: %.2f %% [%s]", PowerNodeRegistry.For(worldIn).getPower(te, te.getPowerType()) / te.getCapacity() * 100, getColorNameFromPowerType(te.getPowerType()))));
 				}else{
-					playerIn.addChatMessage(new TextComponentString(String.format("Charge Level: %s%.2f \u00A7f%%", te.getPowerType().getChatColor(), PowerNodeRegistry.For(worldIn).getPower(te, te.getPowerType()) / te.getCapacity() * 100)));
+					playerIn.sendStatusMessage(new TextComponentString(String.format("Charge Level: %s%.2f \u00A7f%%", te.getPowerType().getChatColor(), PowerNodeRegistry.For(worldIn).getPower(te, te.getPowerType()) / te.getCapacity() * 100)));
 				}
 			}
 		}

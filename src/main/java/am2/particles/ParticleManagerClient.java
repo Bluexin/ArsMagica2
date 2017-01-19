@@ -173,7 +173,7 @@ public class ParticleManagerClient extends ParticleManagerServer{
 
 	@Override
 	public Object BeamFromEntityToPoint(World world, Entity source, double endX, double endY, double endZ, int color){
-		if (!(source instanceof EntityPlayer) || source == Minecraft.getMinecraft().thePlayer){
+		if (!(source instanceof EntityPlayer) || source == Minecraft.getMinecraft().player){
 			return BeamFromPointToPoint(world, source.posX, source.posY, source.posZ, endX, endY, endZ, color);
 		}else{
 			return BeamFromPointToPoint(world, source.posX, source.posY + source.getEyeHeight() - 0.2f, source.posZ, endX, endY, endZ, color);
@@ -515,18 +515,18 @@ public class ParticleManagerClient extends ParticleManagerServer{
 
 	@Override
 	public void spawnBuffParticles(EntityLivingBase entityliving){
-		World world = entityliving.worldObj;
+		World world = entityliving.world;
 
 		if (!world.isRemote) return;
 
-		if (entityliving == Minecraft.getMinecraft().thePlayer){
+		if (entityliving == Minecraft.getMinecraft().player){
 			if (entityliving.isPotionActive(PotionEffectsDefs.trueSight) && entityliving.ticksExisted % 20 == 0){
 				int radius = 5;
 				for (int i = -radius; i <= radius; ++i){
 					for (int j = -radius; j <= radius; ++j){
 						for (int k = -radius; k <= radius; ++k){
-							if (entityliving.worldObj.isAirBlock(entityliving.getPosition().add(i, j, k))
-							 && entityliving.worldObj.getLightFor(EnumSkyBlock.BLOCK, entityliving.getPosition().add(i, j, k)) <= 7){
+							if (entityliving.world.isAirBlock(entityliving.getPosition().add(i, j, k))
+							 && entityliving.world.getLightFor(EnumSkyBlock.BLOCK, entityliving.getPosition().add(i, j, k)) <= 7){
 								AMParticle effect = spawn(world, "hr_sparkles_1",
 										(int)entityliving.posX - 1 + i + (world.rand.nextDouble() * 3),
 										(int)entityliving.posY - 1 + j + (world.rand.nextDouble() * 3),

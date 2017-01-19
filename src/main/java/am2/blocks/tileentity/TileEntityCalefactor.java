@@ -56,7 +56,7 @@ public class TileEntityCalefactor extends TileEntityAMPower implements IInventor
 
 	@Override
 	public float particleOffset(int axis){
-		EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockCalefactor.FACING);
+		EnumFacing facing = world.getBlockState(pos).getValue(BlockCalefactor.FACING);
 
 		if (axis == 0){
 			switch (facing){
@@ -143,14 +143,14 @@ public class TileEntityCalefactor extends TileEntityAMPower implements IInventor
 			ItemStack smeltStack = var1.copy();
 
 			if (this.calefactorItemStacks[0].getItem() instanceof ItemFood || this.calefactorItemStacks[0].getItem() instanceof ItemBlock || this.calefactorItemStacks[0].getItem() == ItemDefs.itemOre){
-				if (PowerNodeRegistry.For(worldObj).checkPower(this, PowerTypes.DARK, getCookTickPowerCost()))
-					if (PowerNodeRegistry.For(worldObj).checkPower(this, PowerTypes.NEUTRAL, getCookTickPowerCost()))
-						if (PowerNodeRegistry.For(worldObj).checkPower(this, PowerTypes.LIGHT, getCookTickPowerCost()))
+				if (PowerNodeRegistry.For(world).checkPower(this, PowerTypes.DARK, getCookTickPowerCost()))
+					if (PowerNodeRegistry.For(world).checkPower(this, PowerTypes.NEUTRAL, getCookTickPowerCost()))
+						if (PowerNodeRegistry.For(world).checkPower(this, PowerTypes.LIGHT, getCookTickPowerCost()))
 							smeltStack.stackSize++;
 			}
 
 			if (this.calefactorItemStacks[0].getItem() instanceof ItemFood){
-				if (smeltStack.stackSize == var1.stackSize && worldObj.rand.nextDouble() < 0.15f){
+				if (smeltStack.stackSize == var1.stackSize && world.rand.nextDouble() < 0.15f){
 					smeltStack.stackSize++;
 				}
 			}
@@ -189,7 +189,7 @@ public class TileEntityCalefactor extends TileEntityAMPower implements IInventor
 	}
 
 	public void handlePacket(byte[] data){
-		if (worldObj.isRemote){
+		if (world.isRemote){
 			AMDataReader rdr = new AMDataReader(data);
 			switch (rdr.ID){
 			case PKT_PRG_UPDATE:
@@ -206,7 +206,7 @@ public class TileEntityCalefactor extends TileEntityAMPower implements IInventor
 	}
 
 	protected void sendCookStatusUpdate(boolean isCooking){
-		if (this.worldObj.isRemote)
+		if (this.world.isRemote)
 			return;
 
 		AMDataWriter writer = new AMDataWriter();
@@ -241,10 +241,10 @@ public class TileEntityCalefactor extends TileEntityAMPower implements IInventor
 	public void update(){
 		super.update();
 		if (isFirstTick) {
-			rotationStepX = worldObj.rand.nextFloat() * 0.03f - 0.015f;
+			rotationStepX = world.rand.nextFloat() * 0.03f - 0.015f;
 			isFirstTick = false;
 		}
-		if (this.worldObj.isRemote){
+		if (this.world.isRemote){
 			incrementRotations();
 			if (this.isCooking){
 				particleCount--;
@@ -255,24 +255,24 @@ public class TileEntityCalefactor extends TileEntityAMPower implements IInventor
 					double rStartZ = Math.random() > 0.5 ? this.pos.getZ() + 0.01 : this.pos.getZ() + 1.01;
 
 					double endX = this.pos.getX() + 0.5f;
-					double endY = this.pos.getY() + 0.7f + (worldObj.rand.nextDouble() * 0.5f);
+					double endY = this.pos.getY() + 0.7f + (world.rand.nextDouble() * 0.5f);
 					double endZ = this.pos.getZ() + 0.5f;
 
-					ArsMagica2.proxy.particleManager.BeamFromPointToPoint(worldObj, rStartX, rStartY, rStartZ, endX, endY, endZ, 0xFF8811);
-					if (worldObj.rand.nextBoolean()){
-						AMParticle effect = (AMParticle)ArsMagica2.proxy.particleManager.spawn(worldObj, "smoke", endX, endY, endZ);
+					ArsMagica2.proxy.particleManager.BeamFromPointToPoint(world, rStartX, rStartY, rStartZ, endX, endY, endZ, 0xFF8811);
+					if (world.rand.nextBoolean()){
+						AMParticle effect = (AMParticle)ArsMagica2.proxy.particleManager.spawn(world, "smoke", endX, endY, endZ);
 						if (effect != null){
 							effect.setIgnoreMaxAge(false);
 							effect.setMaxAge(60);
 							effect.AddParticleController(new ParticleFloatUpward(effect, 0.02f, 0.01f, 1, false));
 						}
 					}else{
-						AMParticle effect = (AMParticle)ArsMagica2.proxy.particleManager.spawn(worldObj, "explosion_2", endX, endY, endZ);
+						AMParticle effect = (AMParticle)ArsMagica2.proxy.particleManager.spawn(world, "explosion_2", endX, endY, endZ);
 						if (effect != null){
 							effect.setIgnoreMaxAge(false);
 							effect.setMaxAge(10);
 							effect.setParticleScale(0.04f);
-							effect.addVelocity(worldObj.rand.nextDouble() * 0.2f - 0.1f, 0.2f, worldObj.rand.nextDouble() * 0.2f - 0.1f);
+							effect.addVelocity(world.rand.nextDouble() * 0.2f - 0.1f, 0.2f, world.rand.nextDouble() * 0.2f - 0.1f);
 							effect.setAffectedByGravity();
 							effect.setDontRequireControllers();
 						}
@@ -283,37 +283,37 @@ public class TileEntityCalefactor extends TileEntityAMPower implements IInventor
 			}
 		}
 		
-		boolean powerCheck = PowerNodeRegistry.For(this.worldObj).checkPower(this, getCookTickPowerCost());
+		boolean powerCheck = PowerNodeRegistry.For(this.world).checkPower(this, getCookTickPowerCost());
 		if (this.canSmelt() && this.isSmelting() && powerCheck){
 			++this.timeSpentCooking;
 			
 			if (this.timeSpentCooking >= getModifiedCookTime()){
-				if (!this.worldObj.isRemote){
+				if (!this.world.isRemote){
 					this.smeltItem();
 				}else{
-					worldObj.playSound(pos.getX(), pos.getY(), pos.getZ(), AMSounds.CALEFACTOR_BURN, SoundCategory.BLOCKS, 0.2f, 1.0f, true);
+					world.playSound(pos.getX(), pos.getY(), pos.getZ(), AMSounds.CALEFACTOR_BURN, SoundCategory.BLOCKS, 0.2f, 1.0f, true);
 				}
 				this.timeSpentCooking = 0;
-				if (!worldObj.isRemote){
+				if (!world.isRemote){
 					sendCookStatusUpdate(false);
 				}
 			}
-			if (!worldObj.isRemote){
-				if (PowerNodeRegistry.For(worldObj).checkPower(this, PowerTypes.DARK, getCookTickPowerCost()) &&
-						PowerNodeRegistry.For(worldObj).checkPower(this, PowerTypes.NEUTRAL, getCookTickPowerCost()) &&
-						PowerNodeRegistry.For(worldObj).checkPower(this, PowerTypes.LIGHT, getCookTickPowerCost())){
+			if (!world.isRemote){
+				if (PowerNodeRegistry.For(world).checkPower(this, PowerTypes.DARK, getCookTickPowerCost()) &&
+						PowerNodeRegistry.For(world).checkPower(this, PowerTypes.NEUTRAL, getCookTickPowerCost()) &&
+						PowerNodeRegistry.For(world).checkPower(this, PowerTypes.LIGHT, getCookTickPowerCost())){
 
-					PowerNodeRegistry.For(this.worldObj).consumePower(this, PowerTypes.DARK, getCookTickPowerCost());
-					PowerNodeRegistry.For(this.worldObj).consumePower(this, PowerTypes.NEUTRAL, getCookTickPowerCost());
-					PowerNodeRegistry.For(this.worldObj).consumePower(this, PowerTypes.LIGHT, getCookTickPowerCost());
+					PowerNodeRegistry.For(this.world).consumePower(this, PowerTypes.DARK, getCookTickPowerCost());
+					PowerNodeRegistry.For(this.world).consumePower(this, PowerTypes.NEUTRAL, getCookTickPowerCost());
+					PowerNodeRegistry.For(this.world).consumePower(this, PowerTypes.LIGHT, getCookTickPowerCost());
 
 				}else{
-					PowerNodeRegistry.For(this.worldObj).consumePower(this, PowerNodeRegistry.For(this.worldObj).getHighestPowerType(this), getCookTickPowerCost());
+					PowerNodeRegistry.For(this.world).consumePower(this, PowerNodeRegistry.For(this.world).getHighestPowerType(this), getCookTickPowerCost());
 				}
 			}
 		}else if (!this.isSmelting() && this.canSmelt() && powerCheck){
 			this.timeSpentCooking = 1;
-			if (!worldObj.isRemote){
+			if (!world.isRemote){
 				sendCookStatusUpdate(true);
 			}
 		}else if (!this.canSmelt()){
@@ -326,8 +326,8 @@ public class TileEntityCalefactor extends TileEntityAMPower implements IInventor
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer){
-		if (worldObj.getTileEntity(pos) != this){
+	public boolean isUsableByPlayer(EntityPlayer entityplayer){
+		if (world.getTileEntity(pos) != this){
 			return false;
 		}
 		return entityplayer.getDistanceSqToCenter(pos) <= 64D;

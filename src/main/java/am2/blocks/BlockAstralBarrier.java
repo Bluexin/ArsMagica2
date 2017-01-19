@@ -52,7 +52,7 @@ public class BlockAstralBarrier extends BlockAMPowered{
 			if (playerIn.isSneaking()){
 				if (worldIn.isRemote){
 					abte.ToggleAuraDisplay();
-					playerIn.addChatMessage(new TextComponentString("Barrier Aura Toggled"));
+					playerIn.sendStatusMessage(new TextComponentString("Barrier Aura Toggled"));
 				}
 			}else{
 				if (!worldIn.isRemote){
@@ -96,7 +96,7 @@ public class BlockAstralBarrier extends BlockAMPowered{
 				entityitem.motionX = (float)world.rand.nextGaussian() * f3;
 				entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
 				entityitem.motionZ = (float)world.rand.nextGaussian() * f3;
-				world.spawnEntityInWorld(entityitem);
+				world.spawnEntity(entityitem);
 			}while (true);
 		}
 		super.breakBlock(world, pos, state);

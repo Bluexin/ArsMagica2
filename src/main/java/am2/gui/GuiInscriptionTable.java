@@ -1,13 +1,5 @@
 package am2.gui;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import am2.api.ArsMagicaAPI;
 import am2.api.SkillRegistry;
 import am2.api.SpellRegistry;
@@ -36,6 +28,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class GuiInscriptionTable extends GuiContainer{
@@ -395,8 +394,8 @@ public class GuiInscriptionTable extends GuiContainer{
 	}
 
 	private void drawBookIcon(){
-		int bookX = this.inventorySlots.getSlot(0).xDisplayPosition;
-		int bookY = this.inventorySlots.getSlot(0).yDisplayPosition;
+		int bookX = this.inventorySlots.getSlot(0).xPos;
+		int bookY = this.inventorySlots.getSlot(0).yPos;
 
 		TextureAtlasSprite icon = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(Items.WRITABLE_BOOK);
 

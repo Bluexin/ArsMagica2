@@ -1,17 +1,12 @@
 package am2.entity;
 
-import java.util.List;
-
-import am2.spell.component.Dig;
-import am2.spell.modifier.Piercing;
-import com.google.common.base.Optional;
-
 import am2.api.affinity.Affinity;
 import am2.api.spell.SpellModifiers;
 import am2.defs.ItemDefs;
 import am2.utils.AffinityShiftUtils;
 import am2.utils.NBTUtils;
 import am2.utils.SpellUtils;
+import com.google.common.base.Optional;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragonPart;
@@ -24,6 +19,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class EntitySpellProjectile extends Entity {
 	
@@ -47,7 +44,7 @@ public class EntitySpellProjectile extends Entity {
 	}
 	
 	public void setTargetWater(){
-		if (!this.worldObj.isRemote)
+		if (!this.world.isRemote)
 			this.getDataManager().set(DW_TARGETGRASS, true);
 	}
 	
@@ -94,7 +91,7 @@ public class EntitySpellProjectile extends Entity {
 			motionZ = -motionZ;			
 		}
 		else {
-			double projectileSpeed = SpellUtils.getModifiedDouble_Mul(1, getSpell(), getShooter(), null, worldObj, SpellModifiers.VELOCITY_ADDED);
+			double projectileSpeed = SpellUtils.getModifiedDouble_Mul(1, getSpell(), getShooter(), null, world, SpellModifiers.VELOCITY_ADDED);
 			double newMotionX = motionX / projectileSpeed;
 			double newMotionY = motionY / projectileSpeed;
 			double newMotionZ = motionZ / projectileSpeed;
@@ -119,15 +116,15 @@ public class EntitySpellProjectile extends Entity {
 		try {
 			if (ticksExisted > 200)
 				this.setDead();
-			RayTraceResult mop = worldObj.rayTraceBlocks(new Vec3d(posX, posY, posZ),new Vec3d(posX + motionX, posY + motionY, posZ + motionZ));
+			RayTraceResult mop = world.rayTraceBlocks(new Vec3d(posX, posY, posZ),new Vec3d(posX + motionX, posY + motionY, posZ + motionZ));
 			if (mop != null && mop.typeOfHit.equals(RayTraceResult.Type.BLOCK)) {
-				if (worldObj.getBlockState(mop.getBlockPos()).getBlock().isBlockSolid(worldObj, mop.getBlockPos(), mop.sideHit) || targetWater()) {
-					worldObj.getBlockState(mop.getBlockPos()).getBlock().onEntityCollidedWithBlock(worldObj, mop.getBlockPos(), worldObj.getBlockState(mop.getBlockPos()), this);
+				if (world.getBlockState(mop.getBlockPos()).getBlock().isBlockSolid(world, mop.getBlockPos(), mop.sideHit) || targetWater()) {
+					world.getBlockState(mop.getBlockPos()).getBlock().onEntityCollidedWithBlock(world, mop.getBlockPos(), world.getBlockState(mop.getBlockPos()), this);
 					if (getBounces() > 0) {
 						bounce(mop.sideHit);
 					} else {
-						SpellUtils.applyStageToGround(getSpell(), getShooter(), worldObj, mop.getBlockPos(), mop.sideHit, posX, posY, posZ, true);
-						SpellUtils.applyStackStage(getSpell(), getShooter(), null, mop.hitVec.xCoord + motionX, mop.hitVec.yCoord + motionY, mop.hitVec.zCoord + motionZ, mop.sideHit, worldObj, false, true, 0);
+						SpellUtils.applyStageToGround(getSpell(), getShooter(), world, mop.getBlockPos(), mop.sideHit, posX, posY, posZ, true);
+						SpellUtils.applyStackStage(getSpell(), getShooter(), null, mop.hitVec.xCoord + motionX, mop.hitVec.yCoord + motionY, mop.hitVec.zCoord + motionZ, mop.sideHit, world, false, true, 0);
 						if (this.getPierces() == 1 || !SpellUtils.modifierIsPresent(SpellModifiers.PIERCING, this.getSpell()))
 							this.setDead();
 						else
@@ -135,7 +132,7 @@ public class EntitySpellProjectile extends Entity {
 					}
 				}
 			} else {
-				List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().addCoord(motionX, motionY, motionZ).expand(0.25D, 0.25D, 0.25D));
+				List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(this, getEntityBoundingBox().addCoord(motionX, motionY, motionZ).expand(0.25D, 0.25D, 0.25D));
 				int effSize = list.size();
 				for (Entity entity : list) {
 					if (entity instanceof EntityLivingBase) {
@@ -145,8 +142,8 @@ public class EntitySpellProjectile extends Entity {
 						}
 						if (entity instanceof EntityDragonPart && ((EntityDragonPart)entity).entityDragonObj instanceof EntityLivingBase)
 							entity = (EntityLivingBase)((EntityDragonPart)entity).entityDragonObj;
-						SpellUtils.applyStageToEntity(getSpell(), getShooter(), worldObj, entity, true);
-						SpellUtils.applyStackStage(getSpell(), getShooter(), (EntityLivingBase) entity, entity.posX, entity.posY, entity.posZ, null, worldObj, false, true, 0);
+						SpellUtils.applyStageToEntity(getSpell(), getShooter(), world, entity, true);
+						SpellUtils.applyStackStage(getSpell(), getShooter(), (EntityLivingBase) entity, entity.posX, entity.posY, entity.posZ, null, world, false, true, 0);
 						break;
 					} else {
 						effSize--;
@@ -168,7 +165,7 @@ public class EntitySpellProjectile extends Entity {
 	
 	public EntityLivingBase getShooter() {
 		try {
-			return (EntityLivingBase) worldObj.getEntityByID(this.getDataManager().get(DW_SHOOTER));
+			return (EntityLivingBase) world.getEntityByID(this.getDataManager().get(DW_SHOOTER));
 		} catch (RuntimeException e) {
 			this.setDead();
 			return null;
@@ -209,7 +206,7 @@ public class EntitySpellProjectile extends Entity {
 	}
 	
 	public void selectHomingTarget () {
-		List<Entity> entities = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getCollisionBoundingBox().expand(10.0F, 10.0F, 10.0F));
+		List<Entity> entities = world.getEntitiesWithinAABBExcludingEntity(this, this.getCollisionBoundingBox().expand(10.0F, 10.0F, 10.0F));
 		Vec3d pos = new Vec3d(posX, posY, posZ);
 		EntityLivingBase target = null;
 		double dist = 900;
@@ -230,7 +227,7 @@ public class EntitySpellProjectile extends Entity {
 	}
 	
 	public EntityLivingBase getHomingTarget() {
-		return (EntityLivingBase) worldObj.getEntityByID(this.getDataManager().get(DW_HOMING_TARGET));
+		return (EntityLivingBase) world.getEntityByID(this.getDataManager().get(DW_HOMING_TARGET));
 	}
 	
 	public void setGravity(float projectileGravity) {

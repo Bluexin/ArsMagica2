@@ -44,7 +44,7 @@ public class ContainerSeerStone extends AM2Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return stone.isUseableByPlayer(entityplayer);
+		return stone.isUsableByPlayer(entityplayer);
 	}
 
 	@Override

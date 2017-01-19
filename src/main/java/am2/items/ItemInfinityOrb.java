@@ -26,7 +26,7 @@ public class ItemInfinityOrb extends ItemArsMagica {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		SkillPoint point = SkillPointRegistry.getPointForTier(itemStackIn.getItemDamage());
 		if (point == null)
-			playerIn.addChatMessage(new TextComponentString("Broken Item : Please use a trash bin."));
+			playerIn.sendStatusMessage(new TextComponentString("Broken Item : Please use a trash bin."));
 		itemStackIn = doGiveSkillPoints(playerIn, itemStackIn, point);
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 	}
@@ -48,10 +48,10 @@ public class ItemInfinityOrb extends ItemArsMagica {
 	
 	private ItemStack doGiveSkillPoints(EntityPlayer player, ItemStack stack, SkillPoint type){
 		if (EntityExtension.For(player).getCurrentLevel() > 0){
-			if (!player.worldObj.isRemote)
+			if (!player.world.isRemote)
 				SkillData.For(player).setSkillPoint(type, SkillData.For(player).getSkillPoint(type) + 1);
-			if (player.worldObj.isRemote){
-				player.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.infOrb" + type.toString())));
+			if (player.world.isRemote){
+				player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.infOrb" + type.toString())));
 			}
 			if (!player.capabilities.isCreativeMode)
 			stack.stackSize--;
@@ -59,9 +59,9 @@ public class ItemInfinityOrb extends ItemArsMagica {
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
 			}
 		}else{
-			if (player.worldObj.isRemote){
-				int message = player.worldObj.rand.nextInt(10);
-				player.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.infOrbFail" + message)));
+			if (player.world.isRemote){
+				int message = player.world.rand.nextInt(10);
+				player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.infOrbFail" + message)));
 			}
 		}
 		return stack;

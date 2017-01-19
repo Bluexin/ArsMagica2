@@ -42,7 +42,7 @@ public class ContainerAstralBarrier extends AM2Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return barrier.isUseableByPlayer(entityplayer);
+		return barrier.isUsableByPlayer(entityplayer);
 	}
 
 

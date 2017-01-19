@@ -49,7 +49,7 @@ public class ContainerSpellSealedDoor extends AM2Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return door.isUseableByPlayer(entityplayer);
+		return door.isUsableByPlayer(entityplayer);
 	}
 
 	@Override

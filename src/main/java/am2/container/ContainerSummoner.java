@@ -135,6 +135,6 @@ public class ContainerSummoner extends AM2Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return summoner.isUseableByPlayer(entityplayer);
+		return summoner.isUsableByPlayer(entityplayer);
 	}
 }

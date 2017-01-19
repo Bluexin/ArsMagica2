@@ -72,7 +72,7 @@ public class SlotMagiciansWorkbenchCrafting extends Slot{
 	 */
 	@Override
 	protected void onCrafting(ItemStack itemCrafted){
-		itemCrafted.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.amountCrafted);
+		itemCrafted.onCrafting(this.thePlayer.world, this.thePlayer, this.amountCrafted);
 		this.amountCrafted = 0;
 
 		ItemStack[] components = new ItemStack[this.craftMatrix.getSizeInventory()];

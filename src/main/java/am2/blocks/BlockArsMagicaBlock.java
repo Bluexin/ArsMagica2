@@ -1,7 +1,5 @@
 package am2.blocks;
 
-import java.util.List;
-
 import am2.items.ItemBlockOreBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -14,6 +12,8 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.List;
 
 public class BlockArsMagicaBlock extends BlockAM {
 	
@@ -50,7 +50,7 @@ public class BlockArsMagicaBlock extends BlockAM {
 	
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BLOCK_TYPE, EnumBlockType.values()[MathHelper.clamp_int(meta, 0, EnumBlockType.values().length - 1)]);
+		return getDefaultState().withProperty(BLOCK_TYPE, EnumBlockType.values()[MathHelper.clamp(meta, 0, EnumBlockType.values().length - 1)]);
 	}
 	
 	@Override

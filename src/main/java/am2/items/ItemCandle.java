@@ -60,7 +60,7 @@ public class ItemCandle extends ItemArsMagica{
 		if (!worldIn.isRemote){
 
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("search_block")){
-				playerIn.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.candlecantplace")));
+				playerIn.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.candlecantplace")));
 				return EnumActionResult.PASS;
 			}
 

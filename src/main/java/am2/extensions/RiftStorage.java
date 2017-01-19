@@ -88,7 +88,7 @@ public class RiftStorage implements IRiftStorage, ICapabilityProvider, ICapabili
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer){
+	public boolean isUsableByPlayer(EntityPlayer entityplayer){
 		//if (accessEntity == null || accessEntity.isDead) return false;
 		return true;//entityplayer.getDistanceSqToEntity(accessEntity) < 64;
 	}

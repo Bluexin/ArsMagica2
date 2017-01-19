@@ -1,14 +1,14 @@
 package am2.commands;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import am2.gui.GuiHudCustomization;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigureAMUICommand extends CommandBase{
 
@@ -22,25 +22,25 @@ public class ConfigureAMUICommand extends CommandBase{
 	}
 
 	@Override
-	public String getCommandName(){
-		return "amuicfg";
-	}
-
-	@Override
-	public String getCommandUsage(ICommandSender icommandsender){
-		return "/amuicfg";
-	}
-
-	@Override
 	public int getRequiredPermissionLevel(){
 		return 0;
 	}
 
 	@Override
-	public List<String> getCommandAliases(){
+	public List<String> getAliases(){
 		ArrayList<String> aliases = new ArrayList<String>();
 		aliases.add("AMUICFG");
 		return aliases;
+	}
+
+	@Override
+	public String getName() {
+		return "amuicfg";
+	}
+
+	@Override
+	public String getUsage(ICommandSender sender) {
+		return "/amuicfg";
 	}
 
 	@Override

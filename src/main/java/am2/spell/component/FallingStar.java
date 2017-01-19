@@ -55,7 +55,7 @@ public class FallingStar extends SpellComponent{
 			star.setShootingStar(2 * damageMultitplier);
 			star.setThrowingEntity(caster);
 			star.setSpellStack(spellStack.copy());
-			world.spawnEntityInWorld(star);
+			world.spawnEntity(star);
 		}
 		return true;
 	}

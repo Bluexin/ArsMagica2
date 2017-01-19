@@ -43,12 +43,7 @@ public class BlockInscriptionTable extends BlockAMSpecialRenderContainer{
 		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.3f, 1.0f);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LEFT, false).withProperty(TIER_1, false).withProperty(TIER_2, false).withProperty(TIER_3, false));
 	}
-	
-	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, placer.getHorizontalFacing().rotateY());
-	}
-	
+
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		BlockPos placePos = pos.offset(state.getValue(FACING));
@@ -56,6 +51,7 @@ public class BlockInscriptionTable extends BlockAMSpecialRenderContainer{
 			worldIn.setBlockState(pos.offset(state.getValue(FACING)), state.withProperty(LEFT, true), 3);
 		else
 			worldIn.setBlockToAir(pos);
+		state.withProperty(FACING, placer.getHorizontalFacing().rotateY());
 	}
 	
 	@Override
@@ -91,7 +87,7 @@ public class BlockInscriptionTable extends BlockAMSpecialRenderContainer{
 			return true;
 		
 		if (te.isInUse(playerIn)){
-			playerIn.addChatMessage(new TextComponentString("Someone else is using this."));
+			playerIn.sendStatusMessage(new TextComponentString("Someone else is using this."));
 			return true;
 		}
 
@@ -167,7 +163,7 @@ public class BlockInscriptionTable extends BlockAMSpecialRenderContainer{
 			entityitem.motionX = (float)world.rand.nextGaussian() * f3;
 			entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
 			entityitem.motionZ = (float)world.rand.nextGaussian() * f3;
-			world.spawnEntityInWorld(entityitem);
+			world.spawnEntity(entityitem);
 		}while (true);
 	}
 	

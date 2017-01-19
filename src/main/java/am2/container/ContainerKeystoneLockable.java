@@ -39,7 +39,7 @@ public class ContainerKeystoneLockable extends AM2Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return ((IInventory)lockable).isUseableByPlayer(entityplayer);
+		return ((IInventory)lockable).isUsableByPlayer(entityplayer);
 	}
 
 	@Override

@@ -41,7 +41,7 @@ minecraft {
     replace 'GRADLE:VERSION', config.version
     replaceIn 'ArsMagica2.java'
 	//replace '${version}', project.version
-    mappings = "snapshot_20161111"  //uncomment this line to use newest Forge mappings. Needs a lot of rework.
+    mappings = "stable_29"  //uncomment this line to use newest Forge mappings. Needs a lot of rework.
 }
 
 jar {

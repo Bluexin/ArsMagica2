@@ -41,7 +41,7 @@ public class EntityBoundArrow extends EntityArrow {
 		ItemStack stack = dataManager.get(SPELL_STACK).orNull();
 		if (stack == null || ! stack.hasTagCompound())
 			return;
-		SpellUtils.applyStackStage(stack, (EntityLivingBase) shootingEntity, living, living.posX, living.posY, living.posZ, null, worldObj, true, true, this.ticksExisted);
+		SpellUtils.applyStackStage(stack, (EntityLivingBase) shootingEntity, living, living.posX, living.posY, living.posZ, null, world, true, true, this.ticksExisted);
 	}
 	
 	@Override

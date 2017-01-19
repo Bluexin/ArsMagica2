@@ -127,6 +127,6 @@ public class ContainerCalefactor extends AM2Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return calefactor.isUseableByPlayer(entityplayer);
+		return calefactor.isUsableByPlayer(entityplayer);
 	}
 }

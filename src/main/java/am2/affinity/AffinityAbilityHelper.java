@@ -1,60 +1,25 @@
 package am2.affinity;
 
-import java.util.Map.Entry;
-
 import am2.ArsMagica2;
-import am2.affinity.abilities.AbilityAgile;
-import am2.affinity.abilities.AbilityAntiEndermen;
-import am2.affinity.abilities.AbilityClearCaster;
-import am2.affinity.abilities.AbilityColdBlooded;
-import am2.affinity.abilities.AbilityExpandedLungs;
-import am2.affinity.abilities.AbilityFastHealing;
-import am2.affinity.abilities.AbilityFirePunch;
-import am2.affinity.abilities.AbilityFireResistance;
-import am2.affinity.abilities.AbilityFireWeakness;
-import am2.affinity.abilities.AbilityFluidity;
-import am2.affinity.abilities.AbilityFulmination;
-import am2.affinity.abilities.AbilityLavaFreeze;
-import am2.affinity.abilities.AbilityLeafLike;
-import am2.affinity.abilities.AbilityLightAsAFeather;
-import am2.affinity.abilities.AbilityLightningStep;
-import am2.affinity.abilities.AbilityMagicWeakness;
-import am2.affinity.abilities.AbilityNightVision;
-import am2.affinity.abilities.AbilityOneWithMagic;
-import am2.affinity.abilities.AbilityPacifist;
-import am2.affinity.abilities.AbilityPhotosynthesis;
-import am2.affinity.abilities.AbilityPoisonResistance;
-import am2.affinity.abilities.AbilityReflexes;
-import am2.affinity.abilities.AbilityRelocation;
-import am2.affinity.abilities.AbilityRooted;
-import am2.affinity.abilities.AbilityShortCircuit;
-import am2.affinity.abilities.AbilitySolidBones;
-import am2.affinity.abilities.AbilitySunlightWeakness;
-import am2.affinity.abilities.AbilitySwiftSwim;
-import am2.affinity.abilities.AbilityThorns;
-import am2.affinity.abilities.AbilityThunderPunch;
-import am2.affinity.abilities.AbilityWaterFreeze;
-import am2.affinity.abilities.AbilityWaterWeakness;
+import am2.affinity.abilities.*;
 import am2.api.affinity.AbstractAffinityAbility;
 import am2.api.affinity.Affinity;
 import am2.api.event.SpellCastEvent;
 import am2.extensions.AffinityData;
 import am2.utils.WorldUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Map.Entry;
 
 public class AffinityAbilityHelper {
 	
@@ -137,7 +102,7 @@ public class AffinityAbilityHelper {
 	@SubscribeEvent
 	public void onPlayerTick(LivingUpdateEvent event) {
 		if (event.getEntityLiving() instanceof EntityPlayer) {
-			if (!event.getEntityLiving().worldObj.isRemote) {
+			if (!event.getEntityLiving().world.isRemote) {
 				for (Entry<String, Integer> entry : AffinityData.For(event.getEntityLiving()).getCooldowns().entrySet()) {
 					if (entry.getValue() > 0)
 						AffinityData.For(event.getEntityLiving()).addCooldown(entry.getKey(), entry.getValue() - 1);

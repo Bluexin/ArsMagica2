@@ -159,7 +159,7 @@ public class AMVector3{
 		double var2 = target.x - this.x;
 		double var4 = target.y - this.y;
 		double var6 = target.z - this.z;
-		return MathHelper.sqrt_double(var2 * var2 + var4 * var4 + var6 * var6);
+		return MathHelper.sqrt(var2 * var2 + var4 * var4 + var6 * var6);
 	}
 
 	public double distanceSqTo(AMVector3 target){

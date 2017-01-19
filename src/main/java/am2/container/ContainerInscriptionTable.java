@@ -45,7 +45,7 @@ public class ContainerInscriptionTable extends Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return table.isUseableByPlayer(entityplayer);
+		return table.isUsableByPlayer(entityplayer);
 	}
 
 	@Override

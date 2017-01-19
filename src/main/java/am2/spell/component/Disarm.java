@@ -51,7 +51,7 @@ public class Disarm extends SpellComponent{
 		if (target instanceof EntityPlayer && (!ArsMagica2.config.getDisarmAffectsPlayers() || (!world.isRemote && !FMLCommonHandler.instance().getMinecraftServerInstance().isPVPEnabled())))
 			return false;
 
-		if (target instanceof EntityPlayer && ((EntityPlayer)target).getActiveItemStack() != null && !target.worldObj.isRemote){
+		if (target instanceof EntityPlayer && ((EntityPlayer)target).getActiveItemStack() != null && !target.world.isRemote){
 			if (EnchantmentHelper.getEnchantmentLevel(AMEnchantments.soulbound, ((EntityPlayer)target).getActiveItemStack()) > 0)
 				return true;
 			((EntityPlayer)target).dropItem(true);
@@ -69,7 +69,7 @@ public class Disarm extends SpellComponent{
 				item.setEntityItemStack(dropstack);
 				item.setPosition(target.posX, target.posY, target.posZ);
 				item.setDefaultPickupDelay();
-				world.spawnEntityInWorld(item);
+				world.spawnEntity(item);
 			}
 			((EntityMob)target).setItemStackToSlot(EntityMob.getSlotForItemStack(stack), null);;
 
@@ -99,7 +99,7 @@ public class Disarm extends SpellComponent{
 				EntityItem item = new EntityItem(world);
 				item.setEntityItemStack(dropstack);
 				item.setPosition(target.posX, target.posY, target.posZ);
-				world.spawnEntityInWorld(item);
+				world.spawnEntity(item);
 			}
 			((EntityMob)target).setAttackTarget(caster);
 		}

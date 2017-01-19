@@ -35,9 +35,9 @@ public class KeystoneUtilities {
 					else
 						combo += rune.getDisplayName() + " ";
 				}
-				player.addChatMessage(new TextComponentString(combo));
+				player.sendStatusMessage(new TextComponentString(combo));
 			}else{
-				player.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.noKeyPresent")));
+				player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.noKeyPresent")));
 			}
 			EntityExtension.For(player).isRecoveringKeystone = false;
 			return true;
@@ -109,11 +109,11 @@ public class KeystoneUtilities {
 			}
 		}
 
-		if (accessMode == KeystoneAccessType.USE && !player.worldObj.isRemote){
-			player.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.wrongKeystoneUse")));
+		if (accessMode == KeystoneAccessType.USE && !player.world.isRemote){
+			player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.wrongKeystoneUse")));
 		}
-		else if (accessMode == KeystoneAccessType.BREAK && !player.worldObj.isRemote){
-			player.addChatMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.wrongKeystoneBreak")));
+		else if (accessMode == KeystoneAccessType.BREAK && !player.world.isRemote){
+			player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.tooltip.wrongKeystoneBreak")));
 		}
 		return false;
 	}

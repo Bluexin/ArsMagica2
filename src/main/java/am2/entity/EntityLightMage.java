@@ -1,7 +1,5 @@
 package am2.entity;
 
-import java.util.List;
-
 import am2.defs.ItemDefs;
 import am2.defs.LootTablesArsMagica;
 import am2.defs.SkillDefs;
@@ -14,13 +12,7 @@ import am2.utils.EntityUtils;
 import am2.utils.NPCSpells;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +32,8 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class EntityLightMage extends EntityCreature{
@@ -136,8 +130,8 @@ public class EntityLightMage extends EntityCreature{
 	}
 
 	private int getAverageNearbyPlayerMagicLevel(){
-		if (this.worldObj == null) return 0;
-		List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().expand(250, 250, 250));
+		if (this.world == null) return 0;
+		List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, this.getEntityBoundingBox().expand(250, 250, 250));
 		if (players.size() == 0) return 0;
 		int avgLvl = 0;
 		for (EntityPlayer player : players){
@@ -148,7 +142,7 @@ public class EntityLightMage extends EntityCreature{
 
 	@Override
 	public boolean getCanSpawnHere(){
-		if (!SpawnBlacklists.entityCanSpawnHere(this.getPosition(), worldObj, this))
+		if (!SpawnBlacklists.entityCanSpawnHere(this.getPosition(), world, this))
 			return false;
 		if (getAverageNearbyPlayerMagicLevel() < 8){
 			return false;
@@ -178,16 +172,16 @@ public class EntityLightMage extends EntityCreature{
 
 	protected boolean isValidLightLevel(){
 
-		if (this.worldObj.getLightFor(EnumSkyBlock.SKY, getPosition()) > this.rand.nextInt(32)){
+		if (this.world.getLightFor(EnumSkyBlock.SKY, getPosition()) > this.rand.nextInt(32)){
 			return false;
 		}else{
-			int var4 = this.worldObj.getLightFor(EnumSkyBlock.BLOCK, getPosition());
+			int var4 = this.world.getLightFor(EnumSkyBlock.BLOCK, getPosition());
 
-			if (this.worldObj.isThundering()){
-				int var5 = this.worldObj.getSkylightSubtracted();
-				this.worldObj.setSkylightSubtracted(10);
-				var4 = this.worldObj.getLightFor(EnumSkyBlock.BLOCK, getPosition());
-				this.worldObj.setSkylightSubtracted(var5);
+			if (this.world.isThundering()){
+				int var5 = this.world.getSkylightSubtracted();
+				this.world.setSkylightSubtracted(10);
+				var4 = this.world.getLightFor(EnumSkyBlock.BLOCK, getPosition());
+				this.world.setSkylightSubtracted(var5);
 			}
 
 			return var4 <= this.rand.nextInt(8);
@@ -217,7 +211,7 @@ public class EntityLightMage extends EntityCreature{
 	}
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand){
-		if (worldObj.isRemote)
+		if (world.isRemote)
 			return EnumActionResult.PASS;
 
 		if (stack != null && stack.getItem() instanceof ItemNameTag)
@@ -227,24 +221,24 @@ public class EntityLightMage extends EntityCreature{
 		
 		if (SkillData.For(player).hasSkill(SkillDefs.MAGE_POSSE_1.getID())){
 			if (EntityUtils.isSummon(this)){
-				player.addChatMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.partyleave"))));
+				player.sendStatusMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.partyleave"))));
 				EntityUtils.revertAI(this);
 			}else{
 				if (EntityExtension.For(player).getCanHaveMoreSummons()){
 					if (EntityExtension.For(player).getCurrentLevel() - 5 >= EntityExtension.For(this).getCurrentLevel()){
-						player.addChatMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.partyjoin"))));
+						player.sendStatusMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.partyjoin"))));
 						EntityUtils.setOwner(this, player);
 						EntityUtils.makeSummon_PlayerFaction(this, player, true);
 						EntityUtils.setSummonDuration(this, -1);
 					}else{
-						player.addChatMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.partyrefuse"))));
+						player.sendStatusMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.partyrefuse"))));
 					}
 				}else{
-					player.addChatMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.partyfull"))));
+					player.sendStatusMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.partyfull"))));
 				}
 			}
 		}else{
-			player.addChatMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.nopartyskill"))));
+			player.sendStatusMessage(new TextComponentString(String.format("\247o%s", I18n.translateToLocal("am2.npc.nopartyskill"))));
 		}
 		return EnumActionResult.SUCCESS;
 	}

@@ -107,7 +107,7 @@ public class SpellBase extends ItemSpellBase{
 	public void onUsingTick(ItemStack stack, EntityLivingBase caster, int count) {
 		SpellShape shape = SpellUtils.getShapeForStage(stack, 0);
 		if (shape.isChanneled())
-			SpellUtils.applyStackStage(stack, caster, null, caster.posX, caster.posY, caster.posZ, EnumFacing.UP, caster.worldObj, true, true, count - 1);
+			SpellUtils.applyStackStage(stack, caster, null, caster.posX, caster.posY, caster.posZ, EnumFacing.UP, caster.world, true, true, count - 1);
 		super.onUsingTick(stack, caster, count);
 	}
 	

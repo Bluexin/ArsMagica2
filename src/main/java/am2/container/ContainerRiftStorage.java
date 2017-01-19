@@ -90,7 +90,7 @@ public class ContainerRiftStorage extends Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return inventory.isUseableByPlayer(entityplayer);
+		return inventory.isUsableByPlayer(entityplayer);
 	}
 
 }

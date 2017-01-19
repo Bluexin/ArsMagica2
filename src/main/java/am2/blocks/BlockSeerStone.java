@@ -1,7 +1,5 @@
 package am2.blocks;
 
-import java.util.Random;
-
 import am2.ArsMagica2;
 import am2.api.blocks.IKeystoneLockable;
 import am2.api.items.KeystoneAccessType;
@@ -25,6 +23,8 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
+
+import java.util.Random;
 
 public class BlockSeerStone extends BlockAMPowered{
 
@@ -75,10 +75,11 @@ public class BlockSeerStone extends BlockAMPowered{
 	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
 		return worldIn.getBlockState(pos.offset(side.getOpposite())).isSideSolid(worldIn, pos, side);
 	}
-	
+
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, facing.getOpposite());
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
@@ -105,7 +106,7 @@ public class BlockSeerStone extends BlockAMPowered{
 		if (playerIn.isSneaking()){
 			sste.invertDetection();
 			if (worldIn.isRemote){
-				playerIn.addChatMessage(new TextComponentString("Inverting detection mode: " + ((TileEntitySeerStone)te).isInvertingDetection()));
+				playerIn.sendStatusMessage(new TextComponentString("Inverting detection mode: " + ((TileEntitySeerStone)te).isInvertingDetection()));
 			}
 			return true;
 		}
@@ -189,7 +190,7 @@ public class BlockSeerStone extends BlockAMPowered{
 				entityitem.motionX = (float)world.rand.nextGaussian() * f3;
 				entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
 				entityitem.motionZ = (float)world.rand.nextGaussian() * f3;
-				world.spawnEntityInWorld(entityitem);
+				world.spawnEntity(entityitem);
 			}while (true);
 		}
 		super.breakBlock(world, pos, state);

@@ -55,10 +55,11 @@ public class BlockMagiciansWorkbench extends BlockAMSpecialRenderContainer{
 	public TileEntity createNewTileEntity(World world, int i){
 		return new TileEntityMagiciansWorkbench();
 	}
-	
+
 	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
@@ -157,7 +158,7 @@ public class BlockMagiciansWorkbench extends BlockAMSpecialRenderContainer{
 				entityitem.motionX = (float)world.rand.nextGaussian() * f3;
 				entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
 				entityitem.motionZ = (float)world.rand.nextGaussian() * f3;
-				world.spawnEntityInWorld(entityitem);
+				world.spawnEntity(entityitem);
 			}while (true);
 		}
 
@@ -171,7 +172,7 @@ public class BlockMagiciansWorkbench extends BlockAMSpecialRenderContainer{
 			entityitem.motionX = (float)world.rand.nextGaussian() * f3;
 			entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
 			entityitem.motionZ = (float)world.rand.nextGaussian() * f3;
-			world.spawnEntityInWorld(entityitem);
+			world.spawnEntity(entityitem);
 		}
 		
 		super.breakBlock(world, pos, state);

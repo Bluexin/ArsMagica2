@@ -156,34 +156,34 @@ public class TileEntityEssenceRefiner extends TileEntityAMPower implements IInve
 	public void update(){
 		super.update();
 
-		if (!worldObj.isRemote){
+		if (!world.isRemote){
 			if (canRefine()){
 				if (remainingRefineTime <= 0){
 					//start refining
 					remainingRefineTime = getRefineTime();
-					worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+					world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 				}
 			}else{
 				if (remainingRefineTime != 0){
 					remainingRefineTime = 0;
-					worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+					world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 				}
 			}
 
 			if (isRefining()){
 				setActiveTexture();
-				if (PowerNodeRegistry.For(this.worldObj).checkPower(this, TICK_REFINE_COST)){
+				if (PowerNodeRegistry.For(this.world).checkPower(this, TICK_REFINE_COST)){
 					remainingRefineTime--;
 					if (remainingRefineTime % 10 == 0)
-						worldObj.markAndNotifyBlock(pos, worldObj.getChunkFromBlockCoords(pos), worldObj.getBlockState(pos), worldObj.getBlockState(pos), 2);
+						world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 2);
 					if (remainingRefineTime <= 0){
 						remainingRefineTime = 0;
-						if (!worldObj.isRemote){
+						if (!world.isRemote){
 							refineItem();
 						}
 					}
 
-					PowerNodeRegistry.For(this.worldObj).consumePower(this, PowerNodeRegistry.For(this.worldObj).getHighestPowerType(this), TICK_REFINE_COST);
+					PowerNodeRegistry.For(this.world).consumePower(this, PowerNodeRegistry.For(this.world).getHighestPowerType(this), TICK_REFINE_COST);
 				}
 			}else{
 				setActiveTexture();
@@ -192,14 +192,14 @@ public class TileEntityEssenceRefiner extends TileEntityAMPower implements IInve
 	}
 
 	private void setActiveTexture(){
-		if (worldObj.getBlockState(pos).getValue(BlockEssenceRefiner.ACTIVE) == isRefining() || worldObj.isRemote) return;
+		if (world.getBlockState(pos).getValue(BlockEssenceRefiner.ACTIVE) == isRefining() || world.isRemote) return;
 		if (isRefining()){
-			if (!worldObj.isRemote){
-				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockEssenceRefiner.ACTIVE, true), 3);
+			if (!world.isRemote){
+				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockEssenceRefiner.ACTIVE, true), 3);
 			}
 		}else{
-			if (!worldObj.isRemote){
-				worldObj.setBlockState(pos, worldObj.getBlockState(pos).withProperty(BlockEssenceRefiner.ACTIVE, false), 3);
+			if (!world.isRemote){
+				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockEssenceRefiner.ACTIVE, false), 3);
 			}
 		}
 	}
@@ -270,8 +270,8 @@ public class TileEntityEssenceRefiner extends TileEntityAMPower implements IInve
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer){
-		if (worldObj.getTileEntity(pos) != this){
+	public boolean isUsableByPlayer(EntityPlayer entityplayer){
+		if (world.getTileEntity(pos) != this){
 			return false;
 		}
 		return entityplayer.getDistanceSqToCenter(pos) <= 64D;

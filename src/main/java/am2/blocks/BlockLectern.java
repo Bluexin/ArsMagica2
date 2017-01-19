@@ -58,7 +58,7 @@ public class BlockLectern extends BlockAMSpecialRenderContainer{
 					entityitem.motionX = (float)world.rand.nextGaussian() * f3;
 					entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
 					entityitem.motionZ = (float)world.rand.nextGaussian() * f3;
-					world.spawnEntityInWorld(entityitem);
+					world.spawnEntity(entityitem);
 					te.setStack(null);
 				}
 			}else{
@@ -106,7 +106,7 @@ public class BlockLectern extends BlockAMSpecialRenderContainer{
 				entityitem.motionX = (float)world.rand.nextGaussian() * f3;
 				entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
 				entityitem.motionZ = (float)world.rand.nextGaussian() * f3;
-				world.spawnEntityInWorld(entityitem);
+				world.spawnEntity(entityitem);
 			}
 		}		
 		super.breakBlock(world, pos, state);
@@ -133,10 +133,10 @@ public class BlockLectern extends BlockAMSpecialRenderContainer{
 	public IBlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta + 2]);
 	}
-	
-	@Override
-	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-	}
 
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+		state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	}
 }

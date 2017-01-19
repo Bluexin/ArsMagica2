@@ -122,8 +122,8 @@ public class TileEntitySpellSealedDoor extends TileEntity implements ITickable, 
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer){
-		if (worldObj.getTileEntity(pos) != this){
+	public boolean isUsableByPlayer(EntityPlayer entityplayer){
+		if (world.getTileEntity(pos) != this){
 			return false;
 		}
 		return entityplayer.getDistanceSqToCenter(pos) <= 64D;
@@ -184,7 +184,7 @@ public class TileEntitySpellSealedDoor extends TileEntity implements ITickable, 
 	@Override
 	public void update(){
 
-		if (!worldObj.isRemote){
+		if (!world.isRemote){
 			curTime++;
 
 			if (closeTime == -1 && lastAppliedTime != -1){
@@ -208,7 +208,7 @@ public class TileEntitySpellSealedDoor extends TileEntity implements ITickable, 
 	}
 
 	private void setOpenState(boolean open){
-		BlockDefs.spellSealedDoor.toggleDoor(worldObj, pos, open);
+		BlockDefs.spellSealedDoor.toggleDoor(world, pos, open);
 	}
 
 	public void addPartToCurrentKey(SpellComponent component){

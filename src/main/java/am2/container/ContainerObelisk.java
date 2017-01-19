@@ -90,7 +90,7 @@ public class ContainerObelisk extends Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer){
-		return obelisk.isUseableByPlayer(entityplayer);
+		return obelisk.isUsableByPlayer(entityplayer);
 	}
 
 }
