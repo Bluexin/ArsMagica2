@@ -66,7 +66,7 @@ public class TileEntitySlipstreamGenerator extends TileEntityAMPower{
                     float pitch = player.rotationPitch;
                     float factor = (pitch > 0 ? (pitch - 10) : (pitch + 10)) / -180.0f;
 					if (Math.abs(pitch) > 10f){
-						player.move(0, -factor, 0);
+						player.move(0, factor, 0);
 					}
 				}
 
