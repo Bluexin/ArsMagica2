@@ -1,15 +1,5 @@
 package am2.gui;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-
-import am2.blocks.BlockManaBattery;
-import am2.commands.ConfigureAMUICommand;
-import am2.defs.BlockDefs;
-import am2.power.PowerNodeRegistry;
-import am2.power.PowerTypes;
-import com.mojang.realmsclient.gui.ChatFormatting;
-
 import am2.ArsMagica2;
 import am2.api.IBoundItem;
 import am2.api.SpellRegistry;
@@ -19,21 +9,23 @@ import am2.api.extensions.IEntityExtension;
 import am2.api.math.AMVector2;
 import am2.api.spell.AbstractSpellPart;
 import am2.armor.ArmorHelper;
+import am2.blocks.BlockManaBattery;
+import am2.commands.ConfigureAMUICommand;
 import am2.defs.ItemDefs;
 import am2.extensions.AffinityData;
 import am2.extensions.EntityExtension;
 import am2.items.ItemSpellBook;
+import am2.power.PowerTypes;
 import am2.spell.ContingencyType;
 import am2.texture.SpellIconManager;
 import am2.utils.AffinityShiftUtils;
 import am2.utils.SpellUtils;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.GlStateManager.DestFactor;
-import net.minecraft.client.renderer.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -47,10 +39,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 
 @SuppressWarnings("deprecation")
 @SideOnly(Side.CLIENT)
@@ -277,7 +271,7 @@ public class AMIngameGUI extends Gui {
 					|| curItem.getItem() == ItemDefs.spellBook || curItem.getItem() == ItemDefs.arcaneSpellbook)){
 				ItemStack spellStack = curItem.getItem() == ItemDefs.spell ? curItem : ((ItemSpellBook)curItem.getItem()).GetActiveItemStack(curItem);
 				if (spellStack != null) {
-					float manaCost = SpellUtils.getManaCost(spellStack) * (1F + (float)((float)EntityExtension.For(Minecraft.getMinecraft().player).getCurrentBurnout() / (float)EntityExtension.For(Minecraft.getMinecraft().player).getMaxBurnout()));
+					float manaCost = SpellUtils.getManaCost(spellStack, Minecraft.getMinecraft().player) * (1F + (float)((float)EntityExtension.For(Minecraft.getMinecraft().player).getCurrentBurnout() / (float)EntityExtension.For(Minecraft.getMinecraft().player).getMaxBurnout()));
 					spellcost = (EntityExtension.For(Minecraft.getMinecraft().player).hasEnoughtMana(manaCost) ? ChatFormatting.AQUA.toString() : ChatFormatting.DARK_RED.toString()) + " (" + (int)(manaCost) + ")";
 					spellcost += ChatFormatting.RESET.toString();
 				}
