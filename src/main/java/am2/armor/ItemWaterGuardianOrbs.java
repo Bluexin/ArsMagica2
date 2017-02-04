@@ -1,7 +1,5 @@
 package am2.armor;
 
-import java.util.List;
-
 import am2.defs.ItemDefs;
 import am2.proxy.gui.ModelLibrary;
 import net.minecraft.block.Block;
@@ -28,6 +26,8 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 public class ItemWaterGuardianOrbs extends AMArmor{
@@ -79,12 +79,12 @@ public class ItemWaterGuardianOrbs extends AMArmor{
 	{
 		AxisAlignedBB bb = entityIn.getEntityBoundingBox();
 
-		int minX = MathHelper.floor_double(bb.minX);
-		int maxX = MathHelper.ceiling_double_int(bb.maxX);
-		int minY = MathHelper.floor_double(bb.minY);
-		int maxY = MathHelper.ceiling_double_int(bb.maxY);
-		int minZ = MathHelper.floor_double(bb.minZ);
-		int maxZ = MathHelper.ceiling_double_int(bb.maxZ);
+		int minX = MathHelper.floor(bb.minX);
+		int maxX = MathHelper.ceil(bb.maxX);
+		int minY = MathHelper.floor(bb.minY);
+		int maxY = MathHelper.ceil(bb.maxY);
+		int minZ = MathHelper.floor(bb.minZ);
+		int maxZ = MathHelper.ceil(bb.maxZ);
 
 		Vec3d vec3d = Vec3d.ZERO;
 		BlockPos.PooledMutableBlockPos blockpos$pooledmutableblockpos = BlockPos.PooledMutableBlockPos.retain();

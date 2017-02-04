@@ -1,30 +1,13 @@
 package am2.models;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.file.*;
-import java.security.CodeSource;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.google.common.base.Charsets;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
 import am2.ArsMagica2;
 import am2.api.ArsMagicaAPI;
 import am2.api.affinity.Affinity;
 import am2.items.rendering.SpellModel;
 import am2.utils.ModelUtils;
+import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -38,6 +21,16 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.LoaderState;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.*;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class ArsMagicaModelLoader implements ICustomModelLoader {
 	
@@ -158,7 +151,7 @@ public class ArsMagicaModelLoader implements ICustomModelLoader {
 		try {
 			Stream<Path> walk = Files.walk(dir, 1);
 			for(Iterator<Path> file = walk.iterator(); file.hasNext();){
-				String name = file.next().toString();
+				String name = file.next().getFileName().toString();
 				if (name.lastIndexOf(File.separatorChar) + 1 > name.length()) continue;
 				name = name.substring(name.lastIndexOf(File.separatorChar) + 1);
 				if (name.equals("")) continue;

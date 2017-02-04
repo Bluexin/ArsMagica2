@@ -1,28 +1,26 @@
 package am2.items.rendering;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.*;
-import java.security.CodeSource;
-import java.util.*;
-import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import com.google.common.collect.Lists;
-
 import am2.ArsMagica2;
 import am2.LogHelper;
 import am2.defs.ItemDefs;
+import com.google.common.collect.Lists;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class SpellRenderer implements ItemMeshDefinition {
 
@@ -69,7 +67,7 @@ public class SpellRenderer implements ItemMeshDefinition {
         try {
             Stream<Path> walk = Files.walk(dir, 1);
             for(Iterator<Path> file = walk.iterator(); file.hasNext();){
-                String name = file.next().toString();
+                String name = file.next().getFileName().toString();
                 if (name.lastIndexOf(File.separatorChar) + 1 > name.length()) continue;
                 name = name.substring(name.lastIndexOf(File.separatorChar) + 1);
                 if (name.equals("")) continue;
