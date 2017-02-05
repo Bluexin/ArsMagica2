@@ -1,34 +1,5 @@
 package am2.proxy;
 
-import static am2.defs.IDDefs.GUI_ARCANE_DECONSTRUCTOR;
-import static am2.defs.IDDefs.GUI_ARCANE_RECONSTRUCTOR;
-import static am2.defs.IDDefs.GUI_ARMOR_INFUSION;
-import static am2.defs.IDDefs.GUI_ASTRAL_BARRIER;
-import static am2.defs.IDDefs.GUI_CALEFACTOR;
-import static am2.defs.IDDefs.GUI_CRYSTAL_MARKER;
-import static am2.defs.IDDefs.GUI_ESSENCE_BAG;
-import static am2.defs.IDDefs.GUI_ESSENCE_REFINER;
-import static am2.defs.IDDefs.GUI_FLICKER_HABITAT;
-import static am2.defs.IDDefs.GUI_INERT_SPAWNER;
-import static am2.defs.IDDefs.GUI_INSCRIPTION_TABLE;
-import static am2.defs.IDDefs.GUI_KEYSTONE;
-import static am2.defs.IDDefs.GUI_KEYSTONE_CHEST;
-import static am2.defs.IDDefs.GUI_KEYSTONE_LOCKABLE;
-import static am2.defs.IDDefs.GUI_MAGICIANS_WORKBENCH;
-import static am2.defs.IDDefs.GUI_OBELISK;
-import static am2.defs.IDDefs.GUI_OCCULUS;
-import static am2.defs.IDDefs.GUI_RIFT;
-import static am2.defs.IDDefs.GUI_RUNE_BAG;
-import static am2.defs.IDDefs.GUI_SEER_STONE;
-import static am2.defs.IDDefs.GUI_SPELL_BOOK;
-import static am2.defs.IDDefs.GUI_SPELL_CUSTOMIZATION;
-import static am2.defs.IDDefs.GUI_SPELL_SEALED_DOOR;
-import static am2.defs.IDDefs.GUI_SUMMONER;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-
 import am2.ArsMagica2;
 import am2.api.blocks.IKeystoneLockable;
 import am2.api.math.AMVector3;
@@ -36,67 +7,14 @@ import am2.api.power.IPowerNode;
 import am2.api.spell.SpellComponent;
 import am2.armor.ArmorHelper;
 import am2.armor.infusions.GenericImbuement;
-import am2.blocks.render.TileArcaneReconstructorRenderer;
-import am2.blocks.render.TileAstralBarrierRenderer;
-import am2.blocks.render.TileBlackAuremRenderer;
-import am2.blocks.render.TileCalefactorRenderer;
-import am2.blocks.render.TileCelestialPrismRenderer;
-import am2.blocks.render.TileCraftingAltarRenderer;
-import am2.blocks.render.TileCrystalMarkerRenderer;
-import am2.blocks.render.TileEssenceConduitRenderer;
-import am2.blocks.render.TileEverstoneRenderer;
-import am2.blocks.render.TileFlickerHabitatRenderer;
-import am2.blocks.render.TileIllusionBlockRenderer;
-import am2.blocks.render.TileKeystoneChestRenderer;
-import am2.blocks.render.TileKeystoneReceptacleRenderer;
-import am2.blocks.render.TileLecternRenderer;
-import am2.blocks.render.TileMagiciansWorkbenchRenderer;
-import am2.blocks.render.TileObeliskRenderer;
-import am2.blocks.render.TileOtherworldAuraRenderer;
-import am2.blocks.render.TileRuneRenderer;
-import am2.blocks.render.TileSeerStoneRenderer;
-import am2.blocks.render.TileSummonerRenderer;
-import am2.blocks.tileentity.TileEntityArcaneDeconstructor;
-import am2.blocks.tileentity.TileEntityArcaneReconstructor;
-import am2.blocks.tileentity.TileEntityArmorImbuer;
-import am2.blocks.tileentity.TileEntityAstralBarrier;
-import am2.blocks.tileentity.TileEntityBlackAurem;
-import am2.blocks.tileentity.TileEntityCalefactor;
-import am2.blocks.tileentity.TileEntityCelestialPrism;
-import am2.blocks.tileentity.TileEntityCraftingAltar;
-import am2.blocks.tileentity.TileEntityCrystalMarker;
-import am2.blocks.tileentity.TileEntityEssenceConduit;
-import am2.blocks.tileentity.TileEntityEssenceRefiner;
-import am2.blocks.tileentity.TileEntityEverstone;
-import am2.blocks.tileentity.TileEntityFlickerHabitat;
-import am2.blocks.tileentity.TileEntityGroundRuneSpell;
-import am2.blocks.tileentity.TileEntityIllusionBlock;
-import am2.blocks.tileentity.TileEntityInertSpawner;
-import am2.blocks.tileentity.TileEntityInscriptionTable;
-import am2.blocks.tileentity.TileEntityKeystoneChest;
-import am2.blocks.tileentity.TileEntityKeystoneRecepticle;
-import am2.blocks.tileentity.TileEntityLectern;
-import am2.blocks.tileentity.TileEntityMagiciansWorkbench;
-import am2.blocks.tileentity.TileEntityObelisk;
-import am2.blocks.tileentity.TileEntityOtherworldAura;
-import am2.blocks.tileentity.TileEntityParticleEmitter;
-import am2.blocks.tileentity.TileEntitySeerStone;
-import am2.blocks.tileentity.TileEntitySpellSealedDoor;
-import am2.blocks.tileentity.TileEntitySummoner;
+import am2.blocks.render.*;
+import am2.blocks.tileentity.*;
 import am2.commands.ConfigureAMUICommand;
-import am2.defs.AMSounds;
-import am2.defs.BindingsDefs;
-import am2.defs.BlockDefs;
-import am2.defs.EntityManager;
-import am2.defs.ItemDefs;
+import am2.defs.*;
 import am2.extensions.RiftStorage;
 import am2.gui.*;
 import am2.handler.BakingHandler;
-import am2.items.ItemEssenceBag;
-import am2.items.ItemKeystone;
-import am2.items.ItemRuneBag;
-import am2.items.ItemSpellBase;
-import am2.items.ItemSpellBook;
+import am2.items.*;
 import am2.models.ArsMagicaModelLoader;
 import am2.models.CullfaceModelLoader;
 import am2.models.SpecialRenderModelLoader;
@@ -132,6 +50,12 @@ import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import static am2.defs.IDDefs.*;
+
 public class ClientProxy extends CommonProxy {
 	
 	public ClientTickHandler clientTickHandler;
@@ -145,7 +69,7 @@ public class ClientProxy extends CommonProxy {
 		case GUI_RIFT: return new GuiRiftStorage(player, RiftStorage.For(player));
 		case GUI_SPELL_BOOK: 
 			ItemStack bookStack = player.getHeldItemMainhand();
-			if (bookStack.getItem() == null || !(bookStack.getItem() instanceof ItemSpellBook)){
+			if (bookStack == null || bookStack.getItem() == null || !(bookStack.getItem() instanceof ItemSpellBook)){
 				return null;
 			}
 			ItemSpellBook item = (ItemSpellBook)bookStack.getItem();
