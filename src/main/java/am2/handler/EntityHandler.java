@@ -6,7 +6,9 @@ import java.util.List;
 import am2.defs.PotionEffectsDefs;
 import am2.entity.EntitySpellProjectile;
 import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.event.world.BlockEvent;
 import org.lwjgl.opengl.GL11;
 
 import am2.ArsMagica2;
