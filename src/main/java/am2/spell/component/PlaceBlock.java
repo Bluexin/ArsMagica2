@@ -1,22 +1,19 @@
 package am2.spell.component;
 
-import java.util.EnumSet;
-import java.util.Random;
-import java.util.Set;
-
-import com.google.common.collect.Sets;
-
 import am2.api.affinity.Affinity;
 import am2.api.spell.SpellComponent;
 import am2.api.spell.SpellModifiers;
 import am2.defs.ItemDefs;
+import am2.utils.BlockProtections;
 import am2.utils.InventoryUtilities;
 import am2.utils.SpellUtils;
+import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -28,6 +25,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+
+import java.util.EnumSet;
+import java.util.Random;
+import java.util.Set;
 
 @SuppressWarnings("deprecation")
 public class PlaceBlock extends SpellComponent{
@@ -104,7 +105,7 @@ public class PlaceBlock extends SpellComponent{
 			if (world.isAirBlock(pos) || !world.getBlockState(pos).getMaterial().isSolid()){
 				ItemStack searchStack = new ItemStack(bd.getBlock(), 1, bd.getBlock().getMetaFromState(bd));
 				if (!world.isRemote && (player.capabilities.isCreativeMode || InventoryUtilities.inventoryHasItem(player.inventory, searchStack, 1))){
-					world.setBlockState(pos, bd);
+					BlockProtections.checkedPlaceBlock((EntityPlayerMP) caster, pos, bd);
 					if (!player.capabilities.isCreativeMode)
 						InventoryUtilities.deductFromInventory(player.inventory, searchStack, 1);
 				}
