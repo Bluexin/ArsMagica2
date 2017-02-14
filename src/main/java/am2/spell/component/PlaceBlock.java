@@ -105,8 +105,7 @@ public class PlaceBlock extends SpellComponent{
 			if (world.isAirBlock(pos) || !world.getBlockState(pos).getMaterial().isSolid()){
 				ItemStack searchStack = new ItemStack(bd.getBlock(), 1, bd.getBlock().getMetaFromState(bd));
 				if (!world.isRemote && (player.capabilities.isCreativeMode || InventoryUtilities.inventoryHasItem(player.inventory, searchStack, 1))){
-					BlockProtections.checkedPlaceBlock((EntityPlayerMP) caster, pos, bd);
-					if (!player.capabilities.isCreativeMode)
+					if (BlockProtections.checkedPlaceBlock((EntityPlayerMP) caster, pos, bd) && !player.capabilities.isCreativeMode)
 						InventoryUtilities.deductFromInventory(player.inventory, searchStack, 1);
 				}
 				return true;
