@@ -56,6 +56,7 @@ public class EntityAIHurricane extends EntityAIBase{
 					for (int z = -1; z <= 1; ++z){
 						BlockPos pos = new BlockPos(host.posX + x, y, host.posZ + z);
 						while (!host.world.canBlockSeeSky(pos) && host.world.getBlockState(pos).getBlock() != Blocks.BEDROCK){
+							if (Math.abs(y - host.posY) > 10) break;
 							host.world.destroyBlock(new BlockPos ((int)host.posX + x, y++, (int)host.posZ + z), true);
 						}
 						y = (int)host.posY + 2;
