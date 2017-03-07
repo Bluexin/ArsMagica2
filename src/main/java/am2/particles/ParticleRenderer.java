@@ -1,22 +1,21 @@
 package am2.particles;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ParticleRenderer{
 
@@ -153,10 +152,11 @@ public class ParticleRenderer{
 		GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		Minecraft.getMinecraft().mcProfiler.startSection(name + "-render");
 
-		EntityLivingBase player = (EntityLivingBase) Minecraft.getMinecraft().getRenderViewEntity();
-		Particle.interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
-		Particle.interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
-		Particle.interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
+		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		if (entity == null) return;
+		Particle.interpPosX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
+		Particle.interpPosY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
+		Particle.interpPosZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
 
 		// bind the texture
 		Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

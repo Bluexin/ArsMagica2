@@ -1,12 +1,5 @@
 package am2.spell.component;
 
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Set;
-
-import com.google.common.collect.Sets;
-
 import am2.ArsMagica2;
 import am2.api.affinity.Affinity;
 import am2.api.spell.SpellComponent;
@@ -19,6 +12,7 @@ import am2.particles.AMParticle;
 import am2.particles.ParticleFadeOut;
 import am2.particles.ParticleMoveOnHeading;
 import am2.utils.SpellUtils;
+import com.google.common.collect.Sets;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -41,6 +35,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Set;
+
 
 public class Disarm extends SpellComponent{
 	@Override
@@ -59,7 +58,7 @@ public class Disarm extends SpellComponent{
 				item.setEntityItemStack(dropstack);
 				item.setPosition(target.posX, target.posY, target.posZ);
 				item.setPickupDelay(15);
-				world.spawnEntityInWorld(item);
+				world.spawnEntity(item);
 				((EntityDarkMage)target).setItemStackToSlot(EntityMob.getSlotForItemStack(stack), null);
 				((EntityDarkMage)target).disarm();
 
@@ -77,7 +76,7 @@ public class Disarm extends SpellComponent{
 			item.setEntityItemStack(dropstack);
 			item.setPosition(target.posX, target.posY, target.posZ);
 			item.setDefaultPickupDelay();
-			world.spawnEntityInWorld(item);
+			world.spawnEntity(item);
 			((EntityPlayer)target).inventory.offHandInventory[0] = null;
 		}
 
@@ -96,7 +95,7 @@ public class Disarm extends SpellComponent{
 				EntityItem item = new EntityItem(world);
 				item.setEntityItemStack(dropstack);
 				item.setPosition(target.posX, target.posY, target.posZ);
-				world.spawnEntityInWorld(item);
+				world.spawnEntity(item);
 			}
 			((EntityMob)target).setAttackTarget(caster);
 
@@ -113,7 +112,7 @@ public class Disarm extends SpellComponent{
 				item.setDefaultPickupDelay();
 				world.spawnEntity(item);
 			}
-			((EntityMob)target).setItemStackToSlot(EntityMob.getSlotForItemStack(stack), null);;
+			target.setItemStackToSlot(EntityMob.getSlotForItemStack(stack), null);
 
 			((EntityMob)target).setAttackTarget(caster);
 
