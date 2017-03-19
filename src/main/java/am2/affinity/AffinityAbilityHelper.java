@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Map;
 import java.util.Map.Entry;
 
 public class AffinityAbilityHelper {
@@ -102,12 +103,13 @@ public class AffinityAbilityHelper {
 	@SubscribeEvent
 	public void onPlayerTick(LivingUpdateEvent event) {
 		if (event.getEntityLiving() instanceof EntityPlayer) {
-			if (!event.getEntityLiving().world.isRemote) {
-				for (Entry<String, Integer> entry : AffinityData.For(event.getEntityLiving()).getCooldowns().entrySet()) {
+//			if (!event.getEntityLiving().world.isRemote) {
+				Map<String, Integer> m = AffinityData.For(event.getEntityLiving()).getCooldowns();
+				for (Entry<String, Integer> entry : m.entrySet()) {
 					if (entry.getValue() > 0)
 						AffinityData.For(event.getEntityLiving()).addCooldown(entry.getKey(), entry.getValue() - 1);
 				}
-			}
+//			}
 			for (AbstractAffinityAbility ability : GameRegistry.findRegistry(AbstractAffinityAbility.class).getValues()) {
 				if (ability.canApply((EntityPlayer) event.getEntityLiving()))
 					ability.applyTick((EntityPlayer) event.getEntityLiving());

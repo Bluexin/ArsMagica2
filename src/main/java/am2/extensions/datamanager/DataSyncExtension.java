@@ -1,7 +1,5 @@
 package am2.extensions.datamanager;
 
-import java.util.ArrayList;
-
 import am2.api.extensions.IDataSyncExtension;
 import am2.packet.AMDataReader;
 import am2.packet.AMDataWriter;
@@ -11,6 +9,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+
+import java.util.ArrayList;
 
 public class DataSyncExtension implements IDataSyncExtension {
 	
@@ -49,7 +49,7 @@ public class DataSyncExtension implements IDataSyncExtension {
 	@Override
 	public <T> T get(SavedObject<T> data) {
 		fillWithNull(data.getId());
-		return (T) internalData.get(Integer.valueOf(data.getId()));
+		return (T) internalData.get(data.getId());
 	}
 	
 	public void scheduleFullUpdate() {

@@ -112,7 +112,8 @@ public class AffinityData implements IAffinityData, ICapabilityProvider, ICapabi
 	
 	@Override
 	public int getCooldown(String name) {
-		return getCooldowns().get(name) == null ? 0 : getCooldowns().get(name);
+		Map<String, Integer> cds = getCooldowns();
+		return cds.containsKey(name) ? getCooldowns().get(name): 0;
 	}
 	
 	@Override

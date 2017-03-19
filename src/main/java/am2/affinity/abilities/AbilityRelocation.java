@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -51,7 +52,7 @@ public class AbilityRelocation extends AbstractAffinityAbility {
 	public void applyKeyPress(EntityPlayer player) {
 		if (AffinityData.For(player).getCooldown("EnderTP") > 0) {
 			if (player.world.isRemote)
-				player.sendStatusMessage(new TextComponentString(I18n.translateToLocal("am2.chat.relocation_cooldown")));
+				player.sendStatusMessage(new TextComponentTranslation("am2.chat.relocation_cooldown"));
 			return;
 		}
 	
