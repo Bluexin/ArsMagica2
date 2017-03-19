@@ -178,8 +178,8 @@ public class BlockEssenceGenerator extends BlockAMPowered{
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		state = state.withProperty(FACING, placer.getHorizontalFacing());
+		worldIn.setBlockState(pos, state);
 	}
 
 }
