@@ -54,7 +54,7 @@ public abstract class TileEntityAMPower extends TileEntity implements IPowerNode
 					PowerNodeRegistry.For(world).insertPower(this, type, amtObtained);
 			}
 		}
-		world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 3);
+		//world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 3);
 	}
 
 	public int getRequestInterval(){

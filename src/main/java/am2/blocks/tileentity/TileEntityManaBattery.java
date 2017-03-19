@@ -1,24 +1,25 @@
 package am2.blocks.tileentity;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import am2.power.PowerNodeRegistry;
 import am2.power.PowerTypes;
+import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 
-public class TileEntityManaBattery extends TileEntityAMPower{
+import java.util.List;
+
+public class TileEntityManaBattery extends TileEntityAMPower implements ITileEntityAMBase {
 
 	private boolean active;
 	public static int storageCapacity = 250000;
 	private PowerTypes outputPowerType = PowerTypes.NONE;
 	private int tickCounter = 0;
+	boolean hasUpdated = false;
+	int prevEnergy;
 
 	public TileEntityManaBattery(){
-		super(250000);
+		super(storageCapacity);
 		active = false;
 	}
 
@@ -28,8 +29,10 @@ public class TileEntityManaBattery extends TileEntityAMPower{
 
 	public void setPowerType(PowerTypes type, boolean forceSubNodes){
 		this.outputPowerType = type;
-		if (world != null && world.isRemote)
-			world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 3);
+		if (world != null && world.isRemote) {
+            markDirty();
+//			world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 3);
+        }
 	}
 
 	public void setActive(boolean active){
@@ -55,18 +58,27 @@ public class TileEntityManaBattery extends TileEntityAMPower{
 			PowerTypes highest = PowerNodeRegistry.For(world).getHighestPowerType(this);
 			float amt = PowerNodeRegistry.For(world).getPower(this, highest);
 			if (amt > 0) {
-				this.outputPowerType = highest;
-			}else{
-				this.outputPowerType = PowerTypes.NONE;
+				if(this.outputPowerType != highest) {
+					this.outputPowerType = highest;
+					this.tickCounter = 0;
+				}
+			} else {
+				if(this.outputPowerType != PowerTypes.NONE) {
+					this.outputPowerType = PowerTypes.NONE;
+					this.tickCounter = 0;
+				}
 			}
 		}
-
-		tickCounter++;
-		if (tickCounter % 600 == 0){
-			world.notifyBlockOfStateChange(pos, getBlockType());
-			tickCounter = 0;
-			world.markAndNotifyBlock(pos, world.getChunkFromBlockCoords(pos), world.getBlockState(pos), world.getBlockState(pos), 3);
-		}
+		this.markDirty();
+		this.getWorld().setBlockState(getPos(), this.getWorld().getBlockState(getPos()), 3);
+		this.getWorld().notifyBlockOfStateChange(getPos(), getBlockType());
+//		if(this.tickCounter == 10) {
+//			this.tickCounter++;
+//			getWorld().notifyBlockUpdate(getPos(), getWorld().getBlockState(getPos()), getWorld().getBlockState(getPos()), 3);
+//		} else{
+//			if(this.tickCounter < 10)
+//				this.tickCounter++;
+//		}
 		super.update();
 	}
 
@@ -87,11 +99,13 @@ public class TileEntityManaBattery extends TileEntityAMPower{
 	}
 
 	@Override
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
+
+	@Override
 	public SPacketUpdateTileEntity getUpdatePacket(){
-		NBTTagCompound compound = new NBTTagCompound();
-		this.writeToNBT(compound);
-		SPacketUpdateTileEntity packet = new SPacketUpdateTileEntity(pos, getBlockMetadata(), compound);
-		return packet;
+		return new SPacketUpdateTileEntity(getPos(), getBlockMetadata(), getUpdateTag());
 	}
 
 	@Override
@@ -114,5 +128,28 @@ public class TileEntityManaBattery extends TileEntityAMPower{
 	@Override
 	public boolean canRelayPower(PowerTypes type){
 		return false;
+	}
+
+	public boolean dirty = false;
+
+	@Override
+	public void markForUpdate() {
+		this.dirty = true;
+	}
+
+	@Override
+	public boolean needsUpdate() {
+		return this.dirty;
+	}
+
+	@Override
+	public void clean() {
+		this.dirty = false;
+	}
+
+	@Override
+	public void markDirty() {
+		this.markForUpdate();
+		super.markDirty();
 	}
 }

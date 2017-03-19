@@ -40,7 +40,6 @@ public class Dig extends SpellComponent {
 	public boolean applyEffectBlock(ItemStack stack, World world, BlockPos blockPos, EnumFacing blockFace, double impactX, double impactY, double impactZ, EntityLivingBase caster) {
 		if (!(caster instanceof EntityPlayer))
 			return false;
-		stack.getTagCompound().setBoolean("ArsMagica2.harvestByProjectile", true);
 		if (world.isRemote)
 			return true;
 		if (!BlockProtections.hasBreakPermission((EntityPlayerMP) caster, blockPos)) return false;
