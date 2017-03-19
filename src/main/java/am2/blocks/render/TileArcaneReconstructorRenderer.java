@@ -81,7 +81,7 @@ public class TileArcaneReconstructorRenderer extends TileEntitySpecialRenderer<T
 		if ((destructionStage != -10) && te.shouldRenderItemStack()){
 			renderStack = te.getCurrentItem();
 			if (renderStack != null)
-				RenderItemAtCoords(renderStack, x + 0.5f, y + 0.85f, z + 0.5f, partialTicks);
+				RenderItemAtCoords(renderStack, x + 0.5f, y + 0.55f, z + 0.5f, partialTicks);
 		}
 		RenderHelper.disableStandardItemLighting();
 

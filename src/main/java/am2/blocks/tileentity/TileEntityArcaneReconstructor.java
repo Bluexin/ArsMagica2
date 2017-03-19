@@ -52,7 +52,7 @@ public class TileEntityArcaneReconstructor extends TileEntityAMPower implements 
 	private boolean isFirstTick = true;
 
 	public TileEntityArcaneReconstructor(){
-		super(500);
+		super(1000);
 		inventory = new ItemStack[getSizeInventory()];
 		active = false;
 		repairCounter = 0;
