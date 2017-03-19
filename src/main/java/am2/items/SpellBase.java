@@ -1,7 +1,5 @@
 package am2.items;
 
-import java.util.List;
-
 import am2.ArsMagica2;
 import am2.api.spell.SpellModifiers;
 import am2.api.spell.SpellShape;
@@ -33,6 +31,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class SpellBase extends ItemSpellBase{
 	public SpellBase(){
@@ -176,7 +175,7 @@ public class SpellBase extends ItemSpellBase{
 
 	@Override
 	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, EntityPlayer player) {
-	    player.worldObj.destroyBlock(pos, player.canHarvestBlock(player.worldObj.getBlockState(pos)));
+	    player.world.destroyBlock(pos, player.canHarvestBlock(player.world.getBlockState(pos)));
 	    return true;
 	}
 
