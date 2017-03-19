@@ -93,7 +93,7 @@ public class AffinityAbilityHelper {
 				if (ability.canApply(player)) {
 
 					WorldUtils.runSided(Side.CLIENT, ability.createRunnable(ArsMagica2.proxy.getLocalPlayer()));
-					WorldUtils.runSided(Side.SERVER, ability.createRunnable(player));
+//					WorldUtils.runSided(Side.SERVER, ability.createRunnable(player));
 				}
 			}
 		}

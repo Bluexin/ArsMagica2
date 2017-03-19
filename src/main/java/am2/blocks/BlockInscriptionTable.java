@@ -1,6 +1,7 @@
 package am2.blocks;
 
 import am2.ArsMagica2;
+import am2.LogHelper;
 import am2.blocks.tileentity.TileEntityInscriptionTable;
 import am2.defs.IDDefs;
 import am2.defs.ItemDefs;
@@ -40,18 +41,22 @@ public class BlockInscriptionTable extends BlockAMSpecialRenderContainer{
 		setHardness(2.0f);
 		setResistance(2.0f);
 		setLightLevel(0.8f);
-		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.3f, 1.0f);
+		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LEFT, false).withProperty(TIER_1, false).withProperty(TIER_2, false).withProperty(TIER_3, false));
 	}
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		BlockPos placePos = pos.offset(state.getValue(FACING));
-		if (worldIn.isAirBlock(placePos) || worldIn.getBlockState(placePos).getBlock().isReplaceable(worldIn, placePos))
-			worldIn.setBlockState(pos.offset(state.getValue(FACING)), state.withProperty(LEFT, true), 3);
-		else
-			worldIn.setBlockToAir(pos);
-		state.withProperty(FACING, placer.getHorizontalFacing().rotateY());
+		EnumFacing nf = placer.getHorizontalFacing().rotateY();
+		worldIn.setBlockState(pos, state.withProperty(FACING, nf));
+		LogHelper.info("Placed at " + pos + " with " + nf);
+
+		BlockPos placePos = pos.offset(nf);
+		LogHelper.info("Second placed at " + placePos);
+
+		if (worldIn.getBlockState(placePos).getBlock().isReplaceable(worldIn, placePos))
+			worldIn.setBlockState(placePos, state.withProperty(LEFT, true).withProperty(FACING, nf), 3);
+		else worldIn.setBlockToAir(pos);
 	}
 	
 	@Override

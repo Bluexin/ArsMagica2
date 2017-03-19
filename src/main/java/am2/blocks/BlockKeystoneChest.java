@@ -50,8 +50,8 @@ public class BlockKeystoneChest extends BlockAMSpecialRenderContainer{
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		state = state.withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		worldIn.setBlockState(pos, state);
 	}
 
 	@Override

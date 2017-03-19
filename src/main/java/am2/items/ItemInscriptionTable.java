@@ -1,5 +1,6 @@
 package am2.items;
 
+import am2.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -22,8 +23,14 @@ public class ItemInscriptionTable extends ItemBlock {
         {
             pos = pos.offset(facing);
         }
+
+		EnumFacing nf = playerIn.getHorizontalFacing().rotateY();
+		LogHelper.info("Testing " + pos + " with facing " + nf);
+
 		BlockPos placePos = pos.offset(playerIn.getHorizontalFacing().rotateY());
-		if (worldIn.isAirBlock(placePos) || worldIn.getBlockState(placePos).getBlock().isReplaceable(worldIn, placePos))
+		LogHelper.info("Testing second at " + placePos);
+
+		if (worldIn.getBlockState(placePos).getBlock().isReplaceable(worldIn, placePos))
 			return super.onItemUse(stack, playerIn, worldIn, pos, hand, facing, hitX, hitY, hitZ);
 		return EnumActionResult.FAIL;
 	}
