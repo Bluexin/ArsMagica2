@@ -1,5 +1,6 @@
 package am2.affinity.abilities;
 
+import am2.affinity.AffinityAbilityHelper;
 import am2.api.affinity.AbstractAffinityAbility;
 import am2.api.affinity.Affinity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,9 +25,10 @@ public class AbilityFirePunch extends AbstractAffinityAbility {
 	
 	@Override
 	public void applyHurt(EntityPlayer player, LivingHurtEvent event, boolean isAttacker) {
-		if (isAttacker && !player.world.isRemote && player.getHeldItemMainhand() == null) {
+		if (isAttacker && !player.world.isRemote && AffinityAbilityHelper.isBareHanded(player)) {
 			event.getEntityLiving().setFire(4);
 			event.setAmount(event.getAmount() + 3);
+			event.getSource().setFireDamage();
 		}
 	}
 }

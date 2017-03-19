@@ -7,7 +7,11 @@ import am2.api.affinity.Affinity;
 import am2.api.event.SpellCastEvent;
 import am2.extensions.AffinityData;
 import am2.utils.WorldUtils;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
@@ -189,5 +193,12 @@ public class AffinityAbilityHelper {
 					ability.applyPreSpellCast((EntityPlayer) event.entityLiving, event);
 			}
 		}
+	}
+
+	public static boolean isBareHanded(EntityPlayer player) {
+		ItemStack is = player.getHeldItemMainhand();
+		return is == null || is.getAttributeModifiers(EntityEquipmentSlot.MAINHAND)
+				.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName()).stream()
+				.mapToDouble(AttributeModifier::getAmount).max().orElse(-1.0D) <= 0.0D;
 	}
 }
